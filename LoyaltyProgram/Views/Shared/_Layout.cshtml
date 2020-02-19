@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/Content/Styles/adminlte/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/Content/Styles/overlayScrollbars/OverlayScrollbars.min.css">
+    @RenderSection("Styles", false)
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -47,5 +48,6 @@
     <script src="~/Content/Scripts/adminlte/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="~/Content/Scripts/adminlte/demo.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>
