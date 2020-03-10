@@ -10,22 +10,38 @@
     <link rel="stylesheet" href="~/Content/Styles/fontawesome-free/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="~/Content/Styles/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/Content/Styles/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/Styles/adminlte/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/Content/Styles/overlayScrollbars/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="~/Content/Styles/kendo/kendo.bootstrap-v4.min.css" />
+    @*<link rel="stylesheet" href="~/Content/kendo/2015.2.902/kendo.bootstrap.min.css" />*@
+
+    @RenderSection("Styles", false)
+    <script src="~/Content/Scripts/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/Content/Scripts/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Content/Scripts/kendo/kendo.all.min.js"></script>
+    <script src="~/Content/Scripts/kendo/kendo.aspnetmvc.min.js"></script>
+    <script src="~/Content/Scripts/kendo/kendo.web.min.js"></script>
+    <script src="~/Content/Scripts/kendo/kendo.notification.min.js"></script>
 </head>
 <body class="hold-transition login-page">
 
     @RenderBody()
-    <!-- jQuery -->
-    <script src="~/Content/Scripts/jquery/jquery.min.js"></script>
+    <script>$.widget.bridge('uibutton', $.ui.button)</script>
     <!-- Bootstrap 4 -->
     <script src="~/Content/Scripts/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/Content/Scripts/overlayScrollbars/OverlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Content/Scripts/adminlte/adminlte.min.js"></script>
-
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/Content/Scripts/adminlte/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/Scripts/adminlte/demo.js"></script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

@@ -14,8 +14,8 @@ namespace LoyaltyProgram.Models
         public int LevelId { get; set; }
         [StringLength(25)]
         public String LevelName { get; set; }
-        public double PointsRangeFrom { get; set; }
-        public double PointsRangeTo { get; set; }
+        public double? PointsRangeFrom { get; set; }
+        public double? PointsRangeTo { get; set; }
         public ICollection<Customer> Customers { get; set; }
 
 

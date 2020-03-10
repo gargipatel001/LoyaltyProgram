@@ -41,7 +41,7 @@ namespace LoyaltyProgram.Models
         public Double CustomerLoyaltyPoints { get; set; }
         public int RoleId { get; set; }
         public Roles Role { get; set; }
-        public int CustomerLevelId { get; set; }
+        public int LevelId { get; set; }
         public CustomerLevel Level { get; set; }
         ICollection<RewardPointHistory> RewardPointHistories { get; set; }
 

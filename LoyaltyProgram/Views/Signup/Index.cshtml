@@ -1,0 +1,233 @@
+﻿@model LoyaltyProgram.ViewModels.CustomerViewModel
+@{
+
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<style>
+    .register-box {
+    width: 600px !important;
+}
+    .k-tooltip-validation {
+    margin: .5rem 0 0;
+    position: absolute !important;
+    border-width: 0;
+    right: -230px;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 9999;
+}
+</style>
+<div class="register-box">
+    <div class="register-logo">
+        @*<a href="../../index2.html"><b>Admin</b>LTE</a>*@
+    </div>
+
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Sign Up</p>
+
+            @using (Html.BeginForm("CreateCustomer", "Signup", FormMethod.Post, new { id = "signupform" }))
+            {
+        <div class="input-group mb-3">
+            @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { placeholder = "Enter First Name", @class = "form-control", required = "required", validationmessage = "Enter First Name" })
+
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                </div>
+
+            </div>
+            <span class="k-invalid-msg" data-for="CustomerFirstName"></span>
+
+        </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerLastName).HtmlAttributes(new { placeholder = "Enter Last Name", @class = "form-control", required = "required", validationmessage = "Enter Last Name" })
+                    <span class="k-invalid-msg" data-for="CustomerLastName"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @(Html.Kendo().DropDownListFor(_ => _.CustomerGender)
+                                          .Name("CustomerGender")
+                                          .DataTextField("Text")
+                                          .DataValueField("Value")
+                                          //.Events(e => e.Change("change"))
+                                          .BindTo(new List<SelectListItem>() {
+
+                                              new SelectListItem() {
+                                                  Text = "F",
+                                                  Value = "1"
+                                              },
+                                              new SelectListItem() {
+                                                  Text = "M",
+                                                  Value = "2"
+                                              }
+                                          })
+                                          //.Value("1")
+                                          .HtmlAttributes(new { @class = "form-control" })
+                    )
+                    <span class="k-invalid-msg" data-for="CustomerGender"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @(Html.Kendo().DatePickerFor(_ => _.CustomerDOB)
+                                         .Name("CustomerDOB")
+                                         .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "select DOB" })
+                    )
+                    <span class="k-invalid-msg" data-for="CustomerDOB"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerAddress).HtmlAttributes(new { placeholder = "Enter Address", @class = "form-control", required = "required", validationmessage = "Enter Address" })
+                    <span class="k-invalid-msg" data-for="CustomerAddress"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-home"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerCity).HtmlAttributes(new { placeholder = "Enter City", @class = "form-control", required = "required", validationmessage = "Enter City" })
+                    <span class="k-invalid-msg" data-for="CustomerCity"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-home"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerProvince).HtmlAttributes(new { placeholder = "Enter Province", @class = "form-control", required = "required", validationmessage = "Enter Province" })
+                    <span class="k-invalid-msg" data-for="CustomerProvince"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-home"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerPostalCode).HtmlAttributes(new { placeholder = "Enter Postal Code", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })
+                    <span class="k-invalid-msg" data-for="CustomerPostalCode"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-home"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerPhoneNumber).HtmlAttributes(new { placeholder = "Enter Phone Number", @class = "form-control", pattern = "\\d{10}", required = "required", type = "tel", validationmessage = "Enter at least ten digits" })
+                    <span class="k-invalid-msg" data-for="CustomerPhoneNumber"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-phone"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerEmail).HtmlAttributes(new { placeholder = "e.g. myname@example.net", required = "required", type = "email", data_email_msg = "Email format is not valid", @class = "form-control" })
+                    <span class="k-invalid-msg" data-for="CustomerEmail"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerPassword).HtmlAttributes(new { placeholder = "Enter Password", required = "required", type = "password", validationmessage = "Enter Password", @class = "form-control" })
+                    <span class="k-invalid-msg" data-for="CustomerPassword"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-key"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerCPassword).HtmlAttributes(new { placeholder = "Confirm Password", required = "required", type = "password", validationmessage = "Enter Password", @class = "form-control" })
+                    <span class="k-invalid-msg" data-for="CustomerCPassword"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-key"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerCardNo).HtmlAttributes(new { placeholder = "Enter Loyalty Card Number", required = "required", validationmessage = "Enter Loyalty Card Number", @class = "form-control" })
+                    <span class="k-invalid-msg" data-for="CustomerCardNo"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-credit-card"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <button id="btnSubmit" type="submit"  class="btn btn-primary btn-block">Sign Up</button>
+                </div>
+
+            }
+
+        </div>
+        <!-- /.form-box -->
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+
+@section Scripts
+{
+    <script src="~/Content/Scripts/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+
+        });
+
+        function confirmPassword(event) {
+            var cPassword = $("#CustomerCPassword");
+            var password = $("#CustomerPassword");
+            if (cPassword.val() != null && cPassword.val() != "" && password.val() != null && password.val() != "") {
+                if (cPassword.val() != password.val()) {
+                    $("#CustomerCPassword").addClass("k-textbox form-control k-invalid");
+                    $("#CustomerCPassword").next().show();
+                    $("#CustomerCPassword").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                    $("#CustomerCPassword").next().text("Password and Confirm Password doesnot match");
+                    event.preventDefault();
+                }
+                else {
+                    $("#CustomerCPassword").addClass("k-textbox form-control k-valid");
+                    $("#CustomerCPassword").next().hide();
+                    $("#CustomerCPassword").next().text("");
+                }
+            }
+        }
+        $(function () {
+            $("#CustomerCPassword").change(function (event) {
+                confirmPassword(event);
+
+            });
+            var validator = $("#signupform").kendoValidator().data("kendoValidator");
+            var status = $(".status");
+            $("#btnSubmit").click(function (event) {
+
+                confirmPassword(event);
+            });
+
+        });
+    </script>
+
+}

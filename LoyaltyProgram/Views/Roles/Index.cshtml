@@ -1,0 +1,29 @@
+﻿@model IEnumerable<LoyaltyProgram.Models.Roles>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@(Html.Kendo().Grid<LoyaltyProgram.Models.Roles>()
+          .Name("grid")
+          .Columns(columns =>
+          {
+              columns.Bound(c => c.RoleId).Width(100).Visible(false);
+              columns.Bound(c => c.RoleName).Width(300).Title("Role");
+              columns.Bound(c => c.RoleDescription).Width(100).Title("Description");
+              //columns.Bound(c => c.Discontinued).Width(200);
+          })
+          //.Scrollable()
+          .Sortable()
+      
+          .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+          .DataSource(dataSource => dataSource
+              .Ajax()
+              .Read(read => read.Action("Select", "Roles"))
+              .PageSize(10)
+          )
+)
+
