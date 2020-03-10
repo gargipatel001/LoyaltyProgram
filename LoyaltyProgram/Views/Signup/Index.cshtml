@@ -121,7 +121,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    @Html.Kendo().TextBoxFor(_ => _.CustomerPostalCode).HtmlAttributes(new { placeholder = "Enter Postal Code", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })
+                    @*@Html.Kendo().TextBoxFor(_ => _.CustomerPostalCode).HtmlAttributes(new { placeholder = "Enter Postal Code", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })*@
+                    @Html.Kendo().MaskedTextBoxFor(_ => _.CustomerPostalCode).Mask("L0L0L0").HtmlAttributes(new { placeholder = "Enter Postal Code (A1A1A1)", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })
                     <span class="k-invalid-msg" data-for="CustomerPostalCode"></span>
                     <div class="input-group-append">
                         <div class="input-group-text">
