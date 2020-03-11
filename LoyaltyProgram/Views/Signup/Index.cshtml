@@ -6,21 +6,22 @@
 
 <style>
     .register-box {
-    width: 600px !important;
-}
+        width: 600px !important;
+    }
+
     .k-tooltip-validation {
-    margin: .5rem 0 0;
-    position: absolute !important;
-    border-width: 0;
-    right: -230px;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-align: center;
-    align-items: center;
-    z-index: 9999;
-}
+        margin: .5rem 0 0;
+        position: absolute !important;
+        border-width: 0;
+        right: -230px;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-align: center;
+        align-items: center;
+        z-index: 9999;
+    }
 </style>
 <div class="register-box">
     <div class="register-logo">
@@ -33,18 +34,18 @@
 
             @using (Html.BeginForm("CreateCustomer", "Signup", FormMethod.Post, new { id = "signupform" }))
             {
-        <div class="input-group mb-3">
-            @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { placeholder = "Enter First Name", @class = "form-control", required = "required", validationmessage = "Enter First Name" })
+                <div class="input-group mb-3">
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { placeholder = "Enter First Name", @class = "form-control", required = "required", validationmessage = "Enter First Name" })
+                    <span class="k-invalid-msg" data-for="CustomerFirstName"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-user"></span>
+                    </div>
+
+
                 </div>
-
-            </div>
-            <span class="k-invalid-msg" data-for="CustomerFirstName"></span>
-
-        </div>
                 <div class="input-group mb-3">
                     @Html.Kendo().TextBoxFor(_ => _.CustomerLastName).HtmlAttributes(new { placeholder = "Enter Last Name", @class = "form-control", required = "required", validationmessage = "Enter Last Name" })
                     <span class="k-invalid-msg" data-for="CustomerLastName"></span>
@@ -64,11 +65,11 @@
 
                                               new SelectListItem() {
                                                   Text = "F",
-                                                  Value = "1"
+                                                  Value = "F"
                                               },
                                               new SelectListItem() {
                                                   Text = "M",
-                                                  Value = "2"
+                                                  Value = "M"
                                               }
                                           })
                                           //.Value("1")
@@ -176,7 +177,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <button id="btnSubmit" type="submit"  class="btn btn-primary btn-block">Sign Up</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-primary btn-block">Sign Up</button>
                 </div>
 
             }
@@ -198,6 +199,7 @@
 
         });
 
+
         function confirmPassword(event) {
             var cPassword = $("#CustomerCPassword");
             var password = $("#CustomerPassword");
@@ -213,6 +215,7 @@
                     $("#CustomerCPassword").addClass("k-textbox form-control k-valid");
                     $("#CustomerCPassword").next().hide();
                     $("#CustomerCPassword").next().text("");
+                    return true;
                 }
             }
         }
@@ -223,10 +226,42 @@
             });
             var validator = $("#signupform").kendoValidator().data("kendoValidator");
             var status = $(".status");
-            $("#btnSubmit").click(function (event) {
-
-                confirmPassword(event);
+          
+            $('#signupform').submit(function (event) {
+                
+               // var x = true;
+                event.preventDefault();
+                    checkEmail(event);
+                  //confirmPassword(event);
+                
             });
+            function checkEmail(event) {
+                var email = $("#CustomerEmail").val();
+                $.ajax({
+                    url: "/Signup/checkMail",
+                    data: { email: email},
+                    type: "POST",
+                    success: function (data) {
+                        
+                        if (data != "") {
+                            debugger
+                            $("#CustomerEmail").next().show();
+                            $("#CustomerEmail").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                            $("#CustomerEmail").next().text(data);
+                            return false;
+                        }
+                        else {
+                            
+                           // $("#signupform").submit();
+                            if (confirmPassword(event) == true) {
+                                  $("#signupform").unbind('submit').submit();
+                            }
+                             
+                        }
+
+                    }
+                });
+            }
 
         });
     </script>

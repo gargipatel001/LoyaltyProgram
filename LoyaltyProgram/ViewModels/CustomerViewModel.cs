@@ -37,6 +37,7 @@ namespace LoyaltyProgram.ViewModels
         public String CustomerCardNo { get; set; }
         public DateTime? CreatedOn { get; set; }
         public Double CustomerLoyaltyPoints { get; set; }
+        public bool IsLoggedIn { get; set; }
         public int RoleId { get; set; }
         public RolesViewModel Role { get; set; }
         public int CustomerLevelId { get; set; }

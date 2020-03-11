@@ -1,59 +1,101 @@
-﻿
+﻿@model LoyaltyProgram.ViewModels.LoginViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="../../index2.html"><b>Loyalty Program</b>  </a>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+<style>
+    .mb-1, .my-1 {
+        margin-bottom: .25rem !important;
+        margin-top: .25rem;
+    }
+</style>
+<div class="login-box">
+    <div class="login-logo">
+        Loyalty Program
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Login<p>
+                @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { id = "loginForm" }))
+                {
 
-                <form action="../../index3.html" method="post">
+
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        @Html.Kendo().TextBoxFor(_ => _.Email).HtmlAttributes(new { placeholder = "e.g. myname@example.net", required = "required", type = "email", data_email_msg = "Email format is not valid", @class = "form-control" })
+
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
+                        <span class="k-invalid-msg" data-for="Email"></span>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        @Html.Kendo().TextBoxFor(_ => _.Password).HtmlAttributes(new { placeholder = "Enter Password", required = "required", type = "password", validationmessage = "Enter Password", @class = "form-control" })
+
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
+                        <span class="k-invalid-msg" data-for="Password"></span>
                     </div>
                     <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
+
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button id="btnLogin" type="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
                         <!-- /.col -->
                     </div>
-                </form>
+                }
 
-                <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    @Html.ActionLink("Sign Up", "Index", "SignUp")
-                </p>
-            </div>
-            <!-- /.login-card-body -->
+            <p class="mb-1">
+                <a href="forgot-password.html">Forgot password?</a>
+                @Html.ActionLink("Sign Up", "Index", "Signup", null, new { style = "float: right;" })
+            </p>
+            @*<p class="mb-0">
+
+                </p>*@
         </div>
-
+        <!-- /.login-card-body -->
     </div>
+
+</div>
+<script>
+
+
+    $(document).ready(function () {
+        var validator = $("form").kendoValidator().data("kendoValidator");
+        var status = $(".status");
+
+    });
+
+    $("#loginForm").submit(function (e) {
+
+        var email = $("#Email").val();
+        var password = $("#Password").val();
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+
+        var form = $(this);
+        $.ajax({
+            url: "/Login/Login",
+            data: { email: email, password: password },
+            type: "POST",
+            success: function (data) {
+
+                if (data != "") {
+                    $("#Password").next().show();
+                    $("#Password").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                    $("#Password").next().text(data);
+                }
+                else {
+                    window.location.href = '/Home/Index';
+                }
+               
+            }
+        });
+
+    });
+</script>

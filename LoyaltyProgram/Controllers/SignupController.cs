@@ -56,7 +56,7 @@ namespace LoyaltyProgram.Controllers
             catch (Exception ex)
             {
 
-                throw;
+               
             }
             return View("Index");
         }
@@ -142,6 +142,17 @@ namespace LoyaltyProgram.Controllers
 
 
 
+        }
+        public ActionResult checkMail(string email)
+        {
+            string message = "";
+            Customer customer = new Customer();
+            customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
+            if (customer!=null && customer.CustomerId > 0)
+            {
+                message = "Email Id already exists";
+            }
+            return Json(message, JsonRequestBehavior.AllowGet);
         }
     }
 }

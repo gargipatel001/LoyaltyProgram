@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace LoyaltyProgram.Models
         public String CustomerCardNo { get; set; }
         public DateTime? CreatedOn { get; set; }
         public Double CustomerLoyaltyPoints { get; set; }
+        [DefaultValue("false")]
+        public bool IsLoggedIn { get; set; }
         public int RoleId { get; set; }
         public Roles Role { get; set; }
         public int LevelId { get; set; }

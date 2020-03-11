@@ -152,6 +152,10 @@
     <Compile Include="Migrations\202003092141056_Migration3.designer.cs">
       <DependentUpon>202003092141056_Migration3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.cs" />
+    <Compile Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.designer.cs">
+      <DependentUpon>202003102052384_AddedIsLoggedInFlagInCustomerTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerLevel.cs" />
@@ -166,6 +170,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CustomerLevelViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RewardPointHistoryViewModel.cs" />
     <Compile Include="ViewModels\RolesViewModel.cs" />
   </ItemGroup>
@@ -2646,6 +2651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003092141056_Migration3.resx">
       <DependentUpon>202003092141056_Migration3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.resx">
+      <DependentUpon>202003102052384_AddedIsLoggedInFlagInCustomerTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
