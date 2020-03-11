@@ -14,6 +14,7 @@ namespace LoyaltyProgram.Controllers
     {
         // GET: Login
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
+        
         public ActionResult Index()
         {
             return View();
@@ -36,6 +37,7 @@ namespace LoyaltyProgram.Controllers
                     db.Entry(customer).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    // Session of type customer view model.
                     cvm.CustomerFirstName = customer.CustomerFirstName;
                     cvm.CustomerLastName = customer.CustomerLastName;
                     cvm.CustomerEmail = customer.CustomerEmail;
@@ -48,6 +50,7 @@ namespace LoyaltyProgram.Controllers
                     cvm.CustomerCity = customer.CustomerCity;
                     cvm.CustomerProvince = customer.CustomerProvince;
                     cvm.IsLoggedIn = customer.IsLoggedIn;
+                    cvm.CustomerCardNo = customer.CustomerCardNo;
 
                     Session["Customer"] = cvm;
                 }
@@ -64,6 +67,28 @@ namespace LoyaltyProgram.Controllers
 
 
 
+        }
+
+        public ActionResult SignOut()
+        {
+            CustomerViewModel cvm = new CustomerViewModel();
+            Customer c = new Customer();
+            if (Session["Customer"]!=null )
+            {
+                cvm = (CustomerViewModel)Session["Customer"];
+                if (cvm!=null)
+                {
+                    c = db.Customers.Where(_ => _.IsLoggedIn == true && _.CustomerEmail == cvm.CustomerEmail).FirstOrDefault() ;
+                    c.IsLoggedIn = false;
+                    db.Entry(c).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                Session["Customer"] = null;
+
+            }
+
+
+            return RedirectToAction("Index");
         }
     }
 }

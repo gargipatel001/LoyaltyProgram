@@ -1,0 +1,91 @@
+﻿@model IList<LoyaltyProgram.ViewModels.PromotionViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+
+    <link href="~/Content/Scripts/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
+}
+<div class="col-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <div class="card-title">
+                Redeem Your Points
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var promotion in Model)
+                {
+                <div class="col-sm-2">
+                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Launch demo modal
+                    </button>*@
+                    <a href="" data-toggle="modal" data-target="#promotionModal">
+
+                        <img src="@promotion.Partner.PartnerLogo" class="img-fluid mb-2" alt="@promotion.PromotionType" />
+                    </a>
+                </div>
+
+                    <div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="promotionModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">@promotion.PromotionName</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span> 
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@promotion.Partner.PartnerLogo" class="img-fluid mb-2" alt="white sample" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h5><b>Points: </b>@promotion.PromotionPoints </h5>
+                                        </div>
+                                        <div  class="col-md-8">
+                                            <label>Quantity:</label>
+
+                                            <input type="text" id="txtQty" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary">Redeem</button>
+
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/Content/Scripts/ekko-lightbox/ekko-lightbox.min.js"></script>
+    <script>
+        $(function () {
+            $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({
+                    alwaysShowClose: true
+                });
+            });
+
+            $('.filter-container').filterizr({ gutterPixels: 3 });
+            $('.btn[data-filter]').on('click', function () {
+                $('.btn[data-filter]').removeClass('active');
+                $(this).addClass('active');
+            });
+        })
+    </script>
+}
+
+

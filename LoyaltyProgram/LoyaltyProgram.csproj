@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MyProfileController.cs" />
+    <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SignupController.cs" />
     <Compile Include="DAL\DBInitializer.cs" />
@@ -140,21 +141,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003091654363_Migration1.cs" />
-    <Compile Include="Migrations\202003091654363_Migration1.designer.cs">
-      <DependentUpon>202003091654363_Migration1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003091731004_Migration2.cs" />
-    <Compile Include="Migrations\202003091731004_Migration2.designer.cs">
-      <DependentUpon>202003091731004_Migration2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003092141056_Migration3.cs" />
-    <Compile Include="Migrations\202003092141056_Migration3.designer.cs">
-      <DependentUpon>202003092141056_Migration3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.cs" />
-    <Compile Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.designer.cs">
-      <DependentUpon>202003102052384_AddedIsLoggedInFlagInCustomerTable.cs</DependentUpon>
+    <Compile Include="Migrations\202003111953137_AddedPromotionPoints.cs" />
+    <Compile Include="Migrations\202003111953137_AddedPromotionPoints.designer.cs">
+      <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -171,6 +160,9 @@
     <Compile Include="ViewModels\CustomerLevelViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\PartnerViewModel.cs" />
+    <Compile Include="ViewModels\PromotionTypeViewModel.cs" />
+    <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\RewardPointHistoryViewModel.cs" />
     <Compile Include="ViewModels\RolesViewModel.cs" />
   </ItemGroup>
@@ -201,6 +193,8 @@
     <Content Include="Content\Images\prod-3.jpg" />
     <Content Include="Content\Images\prod-4.jpg" />
     <Content Include="Content\Images\prod-5.jpg" />
+    <Content Include="Content\Images\PromotionPartners\cineplex-logo.jpg" />
+    <Content Include="Content\Images\PromotionPartners\levis.jpg" />
     <Content Include="Content\Images\user1-128x128.jpg" />
     <Content Include="Content\Images\user2-160x160.jpg" />
     <Content Include="Content\Images\user3-128x128.jpg" />
@@ -228,6 +222,9 @@
     <Content Include="Content\Scripts\chart.js\Chart.min.css" />
     <Content Include="Content\Scripts\chart.js\Chart.min.js" />
     <Content Include="Content\Scripts\daterangepicker\daterangepicker.js" />
+    <Content Include="Content\Scripts\ekko-lightbox\ekko-lightbox.css" />
+    <Content Include="Content\Scripts\ekko-lightbox\ekko-lightbox.js" />
+    <Content Include="Content\Scripts\ekko-lightbox\ekko-lightbox.min.js" />
     <Content Include="Content\Scripts\jquery-knob\jquery.knob.min.js" />
     <Content Include="Content\Scripts\jquery-ui\AUTHORS.txt" />
     <Content Include="Content\Scripts\jquery-ui\external\jquery\jquery.js" />
@@ -2586,6 +2583,8 @@
     <Content Include="Content\Scripts\kendo\kendo.window.min.js.map" />
     <Content Include="Content\Scripts\bs-custom-file-input\bs-custom-file-input.js.map" />
     <Content Include="Content\Scripts\bs-custom-file-input\bs-custom-file-input.min.js.map" />
+    <Content Include="Content\Scripts\ekko-lightbox\ekko-lightbox.js.map" />
+    <Content Include="Content\Scripts\ekko-lightbox\ekko-lightbox.min.js.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2624,6 +2623,7 @@
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Signup\Index.cshtml" />
+    <Content Include="Views\RedeemPoints\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2643,17 +2643,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003091654363_Migration1.resx">
-      <DependentUpon>202003091654363_Migration1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003091731004_Migration2.resx">
-      <DependentUpon>202003091731004_Migration2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003092141056_Migration3.resx">
-      <DependentUpon>202003092141056_Migration3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003102052384_AddedIsLoggedInFlagInCustomerTable.resx">
-      <DependentUpon>202003102052384_AddedIsLoggedInFlagInCustomerTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003111953137_AddedPromotionPoints.resx">
+      <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
