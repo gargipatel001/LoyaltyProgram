@@ -133,7 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MyProfileController.cs" />
-    <Compile Include="Controllers\PointRedeemController.cs" />
+    <Compile Include="Controllers\PointRedeemHistoryController.cs" />
     <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SignupController.cs" />
@@ -2626,7 +2626,7 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Signup\Index.cshtml" />
     <Content Include="Views\RedeemPoints\Index.cshtml" />
-    <Content Include="Views\PointRedeem\Index.cshtml" />
+    <Content Include="Views\PointRedeemHistory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

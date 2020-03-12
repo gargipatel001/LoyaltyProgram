@@ -181,7 +181,7 @@ namespace LoyaltyProgram.Controllers
                 //throw;
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "PointRedeemHistory");
         }
 
     }
