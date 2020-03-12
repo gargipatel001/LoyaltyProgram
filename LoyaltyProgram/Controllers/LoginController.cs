@@ -38,6 +38,7 @@ namespace LoyaltyProgram.Controllers
                     db.SaveChanges();
 
                     // Session of type customer view model.
+                    cvm.CustomerId = customer.CustomerId;
                     cvm.CustomerFirstName = customer.CustomerFirstName;
                     cvm.CustomerLastName = customer.CustomerLastName;
                     cvm.CustomerEmail = customer.CustomerEmail;

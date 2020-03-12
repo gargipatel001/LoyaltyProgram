@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MyProfileController.cs" />
+    <Compile Include="Controllers\PointRedeemController.cs" />
     <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SignupController.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\PartnerViewModel.cs" />
+    <Compile Include="ViewModels\PointRedeemHistoryViewModel.cs" />
     <Compile Include="ViewModels\PromotionTypeViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\RewardPointHistoryViewModel.cs" />
@@ -2624,6 +2626,7 @@
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Signup\Index.cshtml" />
     <Content Include="Views\RedeemPoints\Index.cshtml" />
+    <Content Include="Views\PointRedeem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

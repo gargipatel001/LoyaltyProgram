@@ -21,5 +21,7 @@ namespace LoyaltyProgram.ViewModels
         public PartnerViewModel Partner { get; set; }
         public int PromotionTypeId { get; set; }
         public PromotionViewModel PromotionType { get; set; }
+        public double  customerLoyaltyPoints { get; set; }
+        public bool isRedeemable { get; set; }
     }
 }
