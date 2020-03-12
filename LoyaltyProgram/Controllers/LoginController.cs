@@ -24,45 +24,58 @@ namespace LoyaltyProgram.Controllers
             String message = "";
             Customer customer = new Customer();
             CustomerViewModel cvm = new CustomerViewModel();
-            customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
-            if (customer != null && customer.CustomerId > 0)
+            try
             {
-                if (customer.CustomerPassword != password)
+                
+                customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
+                if (customer != null && customer.CustomerId > 0)
                 {
-                    message = "Enter Correct Password";
+                    if (customer.CustomerPassword != password)
+                    {
+                        message = "Enter Correct Password";
+                    }
+                    else
+                    {
+                        customer.IsLoggedIn = true;
+                        db.Entry(customer).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        // Session of type customer view model.
+                        cvm.CustomerId = customer.CustomerId;
+                        cvm.CustomerFirstName = customer.CustomerFirstName;
+                        cvm.CustomerLastName = customer.CustomerLastName;
+                        cvm.CustomerEmail = customer.CustomerEmail;
+                        cvm.CustomerDOB = customer.CustomerDOB;
+                        cvm.CustomerGender = customer.CustomerGender;
+                        cvm.CustomerLoyaltyPoints = customer.CustomerLoyaltyPoints;
+                        cvm.CustomerLevelId = customer.LevelId;
+                        cvm.RoleId = customer.RoleId;
+                        cvm.CustomerAddress = customer.CustomerAddress;
+                        cvm.CustomerCity = customer.CustomerCity;
+                        cvm.CustomerProvince = customer.CustomerProvince;
+                        cvm.IsLoggedIn = customer.IsLoggedIn;
+                        cvm.CustomerCardNo = customer.CustomerCardNo;
+
+                        Session["Customer"] = cvm;
+                    }
+
                 }
                 else
                 {
-                    customer.IsLoggedIn = true;
-                    db.Entry(customer).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    // Session of type customer view model.
-                    cvm.CustomerId = customer.CustomerId;
-                    cvm.CustomerFirstName = customer.CustomerFirstName;
-                    cvm.CustomerLastName = customer.CustomerLastName;
-                    cvm.CustomerEmail = customer.CustomerEmail;
-                    cvm.CustomerDOB = customer.CustomerDOB;
-                    cvm.CustomerGender = customer.CustomerGender;
-                    cvm.CustomerLoyaltyPoints = customer.CustomerLoyaltyPoints;
-                    cvm.CustomerLevelId = customer.LevelId;
-                    cvm.RoleId = customer.RoleId;
-                    cvm.CustomerAddress = customer.CustomerAddress;
-                    cvm.CustomerCity = customer.CustomerCity;
-                    cvm.CustomerProvince = customer.CustomerProvince;
-                    cvm.IsLoggedIn = customer.IsLoggedIn;
-                    cvm.CustomerCardNo = customer.CustomerCardNo;
-
-                    Session["Customer"] = cvm;
+                    message = "Invalid Email ID";
                 }
+                return Json(message, JsonRequestBehavior.AllowGet);
 
             }
-            else
+            catch (Exception ex)
             {
-                message = "Invalid Email ID";
-            }
 
-            return Json(message, JsonRequestBehavior.AllowGet);
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+          
+           
+
+           
 
 
 
@@ -74,19 +87,28 @@ namespace LoyaltyProgram.Controllers
         {
             CustomerViewModel cvm = new CustomerViewModel();
             Customer c = new Customer();
-            if (Session["Customer"]!=null )
+            try
             {
-                cvm = (CustomerViewModel)Session["Customer"];
-                if (cvm!=null)
+                if (Session["Customer"] != null)
                 {
-                    c = db.Customers.Where(_ => _.IsLoggedIn == true && _.CustomerEmail == cvm.CustomerEmail).FirstOrDefault() ;
-                    c.IsLoggedIn = false;
-                    db.Entry(c).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                Session["Customer"] = null;
+                    cvm = (CustomerViewModel)Session["Customer"];
+                    if (cvm != null)
+                    {
+                        c = db.Customers.Where(_ => _.IsLoggedIn == true && _.CustomerEmail == cvm.CustomerEmail).FirstOrDefault();
+                        c.IsLoggedIn = false;
+                        db.Entry(c).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    Session["Customer"] = null;
 
+                }
             }
+            catch (Exception ex)
+            {
+
+               
+            }
+          
 
 
             return RedirectToAction("Index");

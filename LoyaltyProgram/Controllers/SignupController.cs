@@ -63,95 +63,129 @@ namespace LoyaltyProgram.Controllers
         public int getRoleIdForCustomerRole()
         {
             Roles role = new Roles();
-            role = db.Roles.Where(_ => _.RoleName.Equals("Customer", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-            return role.RoleId; 
+            try
+            {
+                role = db.Roles.Where(_ => _.RoleName.Equals("Customer", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                return role.RoleId;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                //ex.StackTrace.ToString();
+            }
+          
+      
              
         }
         public int getCustomerLevelId(double points)
         {
             int levelId = 0;
             List<CustomerLevel> customerLevels = new List<CustomerLevel>();
-            customerLevels = db.CustomerLevels.ToList();
-            foreach (CustomerLevel clevel in customerLevels)
+            try
             {
-                if (points>=clevel.PointsRangeFrom && points<=clevel.PointsRangeTo)
+                customerLevels = db.CustomerLevels.ToList();
+                foreach (CustomerLevel clevel in customerLevels)
                 {
-                    levelId = clevel.LevelId;
-                    break;
+                    if (points >= clevel.PointsRangeFrom && points <= clevel.PointsRangeTo)
+                    {
+                        levelId = clevel.LevelId;
+                        break;
+                    }
                 }
+                return levelId;
             }
-            return levelId;
+            catch (Exception)
+            {
+
+                return levelId;
+            }
+           
 
         }
         public void sendMail(String username)
         {
-            string emailSender = ConfigurationManager.AppSettings["emailsender"].ToString();
-            string emailSenderPassword = ConfigurationManager.AppSettings["password"].ToString();
-            string emailSenderHost = ConfigurationManager.AppSettings["smtp"].ToString();
-            int emailSenderPort = Convert.ToInt16(ConfigurationManager.AppSettings["portnumber"]);
-            Boolean emailIsSSL = Convert.ToBoolean(ConfigurationManager.AppSettings["IsSSL"]);
-            //string filePath = "~/Templates/SignUpMail.html";
-            string path = Server.MapPath("~/Templates/SignUpMail.html");
+            try
+            {
+                string emailSender = ConfigurationManager.AppSettings["emailsender"].ToString();
+                string emailSenderPassword = ConfigurationManager.AppSettings["password"].ToString();
+                string emailSenderHost = ConfigurationManager.AppSettings["smtp"].ToString();
+                int emailSenderPort = Convert.ToInt16(ConfigurationManager.AppSettings["portnumber"]);
+                Boolean emailIsSSL = Convert.ToBoolean(ConfigurationManager.AppSettings["IsSSL"]);
+                //string filePath = "~/Templates/SignUpMail.html";
+                string path = Server.MapPath("~/Templates/SignUpMail.html");
 
-            StreamReader str = new StreamReader(path);
-            string MailText = str.ReadToEnd();
-            str.Close();
+                StreamReader str = new StreamReader(path);
+                string MailText = str.ReadToEnd();
+                str.Close();
 
-            //Repalce [newusername] = signup user name   
-            MailText = MailText.Replace("[newusername]", username);
-
-
-            string subject = "Welcome to Loyalty Program";
-            MailMessage _mailmsg = new MailMessage();
-
-            //Make TRUE because our body text is html  
-            _mailmsg.IsBodyHtml = true;
-
-            //Set From Email ID  
-            _mailmsg.From = new MailAddress(emailSender);
-
-            //Set To Email ID  
-            _mailmsg.To.Add(username);
-
-            //Set Subject  
-            _mailmsg.Subject = subject;
-
-            //Set Body Text of Email   
-            _mailmsg.Body = MailText;
+                //Repalce [newusername] = signup user name   
+                MailText = MailText.Replace("[newusername]", username);
 
 
-            //Now set your SMTP   
-            SmtpClient _smtp = new SmtpClient();
+                string subject = "Welcome to Loyalty Program";
+                MailMessage _mailmsg = new MailMessage();
 
-            //Set HOST server SMTP detail  
-            _smtp.Host = emailSenderHost;
+                //Make TRUE because our body text is html  
+                _mailmsg.IsBodyHtml = true;
 
-            //Set PORT number of SMTP  
-            _smtp.Port = emailSenderPort;
+                //Set From Email ID  
+                _mailmsg.From = new MailAddress(emailSender);
 
-            //Set SSL --> True / False  
-            _smtp.EnableSsl = emailIsSSL;
+                //Set To Email ID  
+                _mailmsg.To.Add(username);
 
-            //Set Sender UserEmailID, Password  
-            NetworkCredential _network = new NetworkCredential(emailSender, emailSenderPassword);
-            _smtp.Credentials = _network;
+                //Set Subject  
+                _mailmsg.Subject = subject;
 
-            //Send Method will send your MailMessage create above.  
-            _smtp.Send(_mailmsg);
-
+                //Set Body Text of Email   
+                _mailmsg.Body = MailText;
 
 
+                //Now set your SMTP   
+                SmtpClient _smtp = new SmtpClient();
 
+                //Set HOST server SMTP detail  
+                _smtp.Host = emailSenderHost;
+
+                //Set PORT number of SMTP  
+                _smtp.Port = emailSenderPort;
+
+                //Set SSL --> True / False  
+                _smtp.EnableSsl = emailIsSSL;
+
+                //Set Sender UserEmailID, Password  
+                NetworkCredential _network = new NetworkCredential(emailSender, emailSenderPassword);
+                _smtp.Credentials = _network;
+
+                //Send Method will send your MailMessage create above.  
+                _smtp.Send(_mailmsg);
+            }
+            catch (Exception ex)
+            {
+
+                
+            }
         }
         public ActionResult checkMail(string email)
         {
             string message = "";
-            Customer customer = new Customer();
-            customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
-            if (customer!=null && customer.CustomerId > 0)
+            try
             {
-                message = "Email Id already exists";
+               
+                Customer customer = new Customer();
+                customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
+                if (customer != null && customer.CustomerId > 0)
+                {
+                    message = "Email Id already exists";
+                }
+
             }
+            catch (Exception)
+            {
+
+                //return message;
+            }
+           
             return Json(message, JsonRequestBehavior.AllowGet);
         }
     }
