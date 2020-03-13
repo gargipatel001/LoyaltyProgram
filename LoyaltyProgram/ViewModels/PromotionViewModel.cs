@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace LoyaltyProgram.Models
+namespace LoyaltyProgram.ViewModels
 {
-    [Table("Promotion")]
-    public class Promotion
+    public class PromotionViewModel
     {
-        [Key]
         public int PromotionId { get; set; }
-        [StringLength(25)]
+     
         public String PromotionName { get; set; }
-        [StringLength(25)]
+      
         public String PromotionTitle { get; set; }
-        
-        public int PromotionPoints { get; set; }
+
         public String PromotionDesc { get; set; }
         public DateTime? PromotionStartDate { get; set; }
         public DateTime? PromotionEndDate { get; set; }
         public int PartnerId { get; set; }
-        public Partner Partner { get; set; }
+        public int PromotionPoints { get; set; }
+        public PartnerViewModel Partner { get; set; }
         public int PromotionTypeId { get; set; }
-        public PromotionType PromotionType { get; set; }
-
+        public PromotionViewModel PromotionType { get; set; }
+        public double  customerLoyaltyPoints { get; set; }
+        public bool isRedeemable { get; set; }
     }
 }

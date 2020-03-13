@@ -84,15 +84,20 @@
             data: { email: email, password: password },
             type: "POST",
             success: function (data) {
-
-                if (data != "") {
-                    $("#Password").next().show();
-                    $("#Password").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
-                    $("#Password").next().text(data);
-                }
-                else {
+                debugger
+                if (password != "" && email != "") {
+                    if (data != "") {
+                        $("#Password").next().show();
+                        $("#Password").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                        $("#Password").next().text(data);
+                    }
+                     else {
                     window.location.href = '/Home/Index';
                 }
+                  
+                }
+                
+               
                
             }
         });
