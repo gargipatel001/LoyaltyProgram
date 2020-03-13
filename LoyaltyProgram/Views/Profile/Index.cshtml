@@ -1,27 +1,29 @@
-﻿@model LoyaltyProgram.ViewModels.CustomerViewModel
+﻿
+@model LoyaltyProgram.ViewModels.CustomerViewModel
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+
 <div class="col-md-12">
     <!-- general form elements disabled -->
 
-    <div class="card card-warning">
+    <div class="card card-success">
         <div class="card-header">
-            <h3 class="card-title">Update Profile</h3>
+            <h3 class="card-title">MyProfile</h3>
         </div>
-       
-        
+
+
         <div class="card-body">
-            @using (Html.BeginForm("UpdateCustomer", "Update", FormMethod.Post, new { id = "updateform" }))
+            @using (Html.BeginForm("MyProfile", "Profile", FormMethod.Post, new { id = "myprofileform" }))
             {
                 <div class="row">
                     <div class="col-sm-12">
                         <!-- firstname input -->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { placeholder = "Enter First Name", @class = "form-control", required = "required", validationmessage = "Enter First Name" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { @class = "form-control", validationmessage = "First Name not Present", @readonly = "readonly" })
                             <span class="k-invalid-msg" data-for="CustomerFirstName"></span>
                         </div>
                     </div>
@@ -31,8 +33,26 @@
                     <div class="col-sm-12">
                         <!-- lastname input -->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerLastName).HtmlAttributes(new { placeholder = "Enter Last Name", @class = "form-control", required = "required", validationmessage = "Enter Last Name" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerLastName).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Last Name not Present", @readonly = "readyonly" })
                             <span class="k-invalid-msg" data-for="CustomerLastName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- email input -->
+                        <div class="form-group">
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerEmail).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Email not Present", @readonly = "readyonly" })
+                            <span class="k-invalid-msg" data-for="CustomerEmail"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- email input -->
+                        <div class="form-group">
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerCardNo).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "CardNo not present ", @readonly = "readyonly" })
+                            <span class="k-invalid-msg" data-for="CustomerCardNo"></span>
                         </div>
                     </div>
                 </div>
@@ -49,16 +69,16 @@
                                           .BindTo(new List<SelectListItem>() {
 
                                               new SelectListItem() {
-                                                  Text = "F",
+                                                  Text = "Female",
                                                   Value = "F"
                                               },
                                               new SelectListItem() {
-                                                  Text = "M",
+                                                  Text = "Male",
                                                   Value = "M"
                                               }
                                           })
                                           //.Value("1")
-                                          .HtmlAttributes(new { @class = "form-control" })
+                                          .HtmlAttributes(new { @class = "form-control", @readonly = "readyonly" })
                             )
                             <span class="k-invalid-msg" data-for="CustomerGender"></span>
                         </div>
@@ -70,7 +90,7 @@
                         <div class="form-group">
                             @(Html.Kendo().DatePickerFor(_ => _.CustomerDOB)
                                         .Name("CustomerDOB")
-                                        .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "select DOB" })
+                                        .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "select DOB", @readonly = "readonly" })
                             )
                             <span class="k-invalid-msg" data-for="CustomerDOB"></span>
                         </div>
@@ -80,7 +100,7 @@
                     <div class="col-sm-12">
                         <!-- Address-->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerAddress).HtmlAttributes(new { placeholder = "Enter Address", @class = "form-control", required = "required", validationmessage = "Enter Address" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerAddress).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Enter Address", @readyonly = "readyonly" })
                             <span class="k-invalid-msg" data-for="CustomerAddress"></span>
                         </div>
                     </div>
@@ -89,7 +109,7 @@
                     <div class="col-sm-12">
                         <!-- city-->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerCity).HtmlAttributes(new { placeholder = "Enter City", @class = "form-control", required = "required", validationmessage = "Enter City" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerCity).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "City not present", @readyonly = "readyonly" })
                             <span class="k-invalid-msg" data-for="CustomerCity"></span>
                         </div>
                     </div>
@@ -98,7 +118,7 @@
                     <div class="col-sm-12">
                         <!-- Province-->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerProvince).HtmlAttributes(new { placeholder = "Enter Province", @class = "form-control", required = "required", validationmessage = "Enter Province" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerProvince).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Province not Present", @readonly = "readonly" })
                             <span class="k-invalid-msg" data-for="CustomerProvince"></span>
                         </div>
                     </div>
@@ -107,7 +127,7 @@
                     <div class="col-sm-6">
                         <!-- Postal Code-->
                         <div class="form-group">
-                            @Html.Kendo().MaskedTextBoxFor(_ => _.CustomerPostalCode).Mask("L0L0L0").HtmlAttributes(new { placeholder = "Enter Postal Code (A1A1A1)", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })
+                            @Html.Kendo().MaskedTextBoxFor(_ => _.CustomerPostalCode).Mask("L0L0L0").HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Postal Code Not Present", @readonly = "readyonly" })
                             <span class="k-invalid-msg" data-for="CustomerPostalCode"></span>
                         </div>
                     </div>
@@ -116,7 +136,7 @@
                     <div class="col-sm-6">
                         <!-- Phone Number-->
                         <div class="form-group">
-                            @Html.Kendo().TextBoxFor(_ => _.CustomerPhoneNumber).HtmlAttributes(new { placeholder = "Enter Phone Number", @class = "form-control", pattern = "\\d{10}", required = "required", type = "tel", validationmessage = "Enter at least ten digits" })
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerPhoneNumber).HtmlAttributes(new { @class = "form-control", pattern = "\\d{10}", required = "required", type = "tel", validationmessage = "Enter at least ten digits", @readonly = "readyonly" })
                             <span class="k-invalid-msg" data-for="CustomerPhoneNumber"></span>
                         </div>
                     </div>
@@ -124,7 +144,10 @@
             }
             <div class="row">
                 <div class="col-sm-6">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Edit Profile
+                    @Html.ActionLink("EditProfile", "Index", "Update", null, new { style = "float: left;" })
+                    </button>
+                    </p>
                 </div>
             </div>
         </div>
@@ -140,3 +163,5 @@
                 });
 
     </script>
+
+

@@ -4,15 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LoyaltyProgram.ViewModels;
-using LoyaltyProgram.Models;
-using LoyaltyProgram.DAL;
 
 
 namespace LoyaltyProgram.Controllers
 {
-    public class MyProfileController : Controller
+    public class ProfileController : Controller
     {
-        // GET: MyProfile
         CustomerViewModel cvm = new CustomerViewModel();
         public ActionResult Index()
         {
@@ -25,7 +22,8 @@ namespace LoyaltyProgram.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
+          
         }
-        
     }
 }
