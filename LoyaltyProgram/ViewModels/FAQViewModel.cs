@@ -1,18 +1,14 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace LoyaltyProgram.Models
+namespace LoyaltyProgram.ViewModels
 {
-    [Table("FAQ")]
-    public class FAQ
+    public class FAQViewModel
     {
-        [Key]
         public int FAQId { get; set; }
-     
+
         public String Question { get; set; }
 
         public String Answer { get; set; }

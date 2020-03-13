@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using LoyaltyProgram.ViewModels;
 
 namespace LoyaltyProgram.Controllers
 {
@@ -22,8 +23,18 @@ namespace LoyaltyProgram.Controllers
         {
             try
             {
-                var data = db.PointRedeemHistories.Include(_ => _.Promotion).ToList();
-                return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+                if (Session["Customer"] != null)
+                {
+                    CustomerViewModel cvm = new CustomerViewModel();
+                    cvm = (CustomerViewModel)Session["Customer"];
+                    var data = db.PointRedeemHistories.Include(_ => _.Promotion).Where(_=>_.CustomerId==cvm.CustomerId).ToList();
+                    return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+                }
+                else {
+                    return Json("", JsonRequestBehavior.AllowGet);
+                }
+              
             }
             catch (Exception ex)
             {

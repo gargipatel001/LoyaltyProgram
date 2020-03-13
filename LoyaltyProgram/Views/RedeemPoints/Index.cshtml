@@ -23,20 +23,14 @@
                     @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             Launch demo modal
         </button>*@
-                    @if (promotion.isRedeemable == true)
-                    {
-                        <a href=""  data-toggle="modal" data-target="#promotionModal_@promotion.PromotionId">
 
-                            <img src="@promotion.Partner.PartnerLogo" class="img-fluid mb-2" alt="@promotion.PromotionType" />
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="" class="btn disabled" data-toggle="modal" data-target="#promotionModal_@promotion.PromotionId">
 
-                            <img src="@promotion.Partner.PartnerLogo" class="img-fluid mb-2" alt="@promotion.PromotionType" />
-                        </a>
-                    }
+                    <a href="" data-toggle="modal" data-target="#promotionModal_@promotion.PromotionId">
+
+                        <img src="@promotion.Partner.PartnerLogo" class="img-fluid mb-2" alt="@promotion.PromotionType" />
+                    </a>
+                  
+                    
 
                 </div>
                     <div class="modal fade" id="promotionModal_@promotion.PromotionId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -49,7 +43,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    @using (Html.BeginForm("RedeemPoints", "RedeemPoints",new { promotionId = promotion.PromotionId}, FormMethod.Post, new { id = "redeemForm" + promotion.PromotionId.ToString() }))
+                                    @using (Html.BeginForm("RedeemPoints", "RedeemPoints", new { promotionId = promotion.PromotionId }, FormMethod.Post, new { id = "redeemForm" + promotion.PromotionId.ToString() }))
                                     {
                                         <div id="promotionSelectedDiv_@promotion.PromotionId" class="form-group">
                                             @Html.HiddenFor(_ => promotion.PromotionId)
@@ -63,13 +57,31 @@
                                                 <label for="lblPointsValue" class="col-form-label">@promotion.PromotionPoints</label>
                                             </h3>
                                         </div>
+                                        if (promotion.isRedeemable == false)
+                                        {
+                                            <div class="form-group">
+                                                
 
+                                                    <label for="lblPoints" class="col-form-label text-danger">You donot have sufficient points to redeem this promotion.</label>
+                                                    @*<label for="lblPointsValue" class="col-form-label">@promotion.PromotionPoints</label>*@
+                                               
+                                            </div>
+                                        }
+                                       
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="submit"  id="promotionSelected_@(promotion.PromotionId)" class="btn btn-primary">Redeem</button>
+                                            @if (promotion.isRedeemable == true)
+                                            {
+                                                <button type="submit" id="promotionSelected_@(promotion.PromotionId)" class="btn btn-primary">Redeem</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" id="promotionSelected_@(promotion.PromotionId)" class="btn btn-primary" disabled="disabled">Redeem</button>
+                                            }
+
                                         </div>
                                     }
-                                    </div>
+                                </div>
                                
                             </div>
                         </div>

@@ -130,6 +130,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MyProfileController.cs" />
@@ -146,6 +147,10 @@
     <Compile Include="Migrations\202003111953137_AddedPromotionPoints.designer.cs">
       <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003130217222_ChangeInFAQTable.cs" />
+    <Compile Include="Migrations\202003130217222_ChangeInFAQTable.designer.cs">
+      <DependentUpon>202003130217222_ChangeInFAQTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerLevel.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CustomerLevelViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\FAQViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\PartnerViewModel.cs" />
     <Compile Include="ViewModels\PointRedeemHistoryViewModel.cs" />
@@ -2598,6 +2604,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Templates\RedeemPointsConfirmation.html" />
     <Content Include="Templates\SignUpMail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2627,6 +2634,7 @@
     <Content Include="Views\Signup\Index.cshtml" />
     <Content Include="Views\RedeemPoints\Index.cshtml" />
     <Content Include="Views\PointRedeemHistory\Index.cshtml" />
+    <Content Include="Views\FAQ\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2648,6 +2656,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003111953137_AddedPromotionPoints.resx">
       <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003130217222_ChangeInFAQTable.resx">
+      <DependentUpon>202003130217222_ChangeInFAQTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

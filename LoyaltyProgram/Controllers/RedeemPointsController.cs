@@ -8,7 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Data.Entity;
-
+using System.Configuration;
+using System.Net.Mail;
+using System.Net;
 
 namespace LoyaltyProgram.Controllers
 {
@@ -150,29 +152,36 @@ namespace LoyaltyProgram.Controllers
                 {
                     CustomerViewModel cvm = new CustomerViewModel();
                     cvm = (CustomerViewModel)Session["Customer"];
-
                     PointRedeemHistory pointsRedeem = new PointRedeemHistory();
-                    pointsRedeem.CustomerId = cvm.CustomerId;
-                    pointsRedeem.PointsRedeemedOn = DateTime.Now;
-                    pointsRedeem.PromotionId = p.PromotionId;
-                    pointsRedeem.PointsRedeemed = p.PromotionPoints;
-                    db.PointRedeemHistories.Add(pointsRedeem);
-
-                    // pointsleft = cvm.CustomerLoyaltyPoints - p.PromotionPoints;
-                    cvm.CustomerLoyaltyPoints = cvm.CustomerLoyaltyPoints - p.PromotionPoints;
-
                     Customer c = new Customer();
-                    c = db.Customers.Where(_ => _.CustomerId == cvm.CustomerId).FirstOrDefault();
-                    c.CustomerLoyaltyPoints = cvm.CustomerLoyaltyPoints;
+                    if (cvm.CustomerLoyaltyPoints > 0)
+                    {
+
+                        pointsRedeem.CustomerId = cvm.CustomerId;
+                        pointsRedeem.PointsRedeemedOn = DateTime.Now;
+                        pointsRedeem.PromotionId = p.PromotionId;
+                        pointsRedeem.PointsRedeemed = p.PromotionPoints;
+                        db.PointRedeemHistories.Add(pointsRedeem);
+
+                        // pointsleft = cvm.CustomerLoyaltyPoints - p.PromotionPoints;
+                        cvm.CustomerLoyaltyPoints = cvm.CustomerLoyaltyPoints - p.PromotionPoints;
 
 
-                    Session["Customer"] = cvm;
+                        c = db.Customers.Where(_ => _.CustomerId == cvm.CustomerId).FirstOrDefault();
+                        c.CustomerLoyaltyPoints = cvm.CustomerLoyaltyPoints;
 
-                   
-                    db.Entry(c).State = EntityState.Modified;
-                   
-                    //db.SaveChanges();
-                    db.SaveChanges();
+
+                        Session["Customer"] = cvm;
+
+
+                        db.Entry(c).State = EntityState.Modified;
+
+                        //db.SaveChanges();
+                        db.SaveChanges();
+                        sendConfirmationMail(cvm.CustomerEmail, p.PromotionName);
+                    }
+
+                 
                 }
             }
             catch (Exception ex)
@@ -182,6 +191,101 @@ namespace LoyaltyProgram.Controllers
             }
 
             return RedirectToAction("Index", "PointRedeemHistory");
+        }
+
+        public void sendConfirmationMail(string cMail, string promotion)
+        {
+            try
+            {
+                string couponCode = generateCouponCode();
+
+                string emailSender = ConfigurationManager.AppSettings["emailsender"].ToString();
+                string emailSenderPassword = ConfigurationManager.AppSettings["password"].ToString();
+                string emailSenderHost = ConfigurationManager.AppSettings["smtp"].ToString();
+                int emailSenderPort = Convert.ToInt16(ConfigurationManager.AppSettings["portnumber"]);
+                Boolean emailIsSSL = Convert.ToBoolean(ConfigurationManager.AppSettings["IsSSL"]);
+                //string filePath = "~/Templates/SignUpMail.html";
+                string path = Server.MapPath("~/Templates/RedeemPointsConfirmation.html");
+
+                StreamReader str = new StreamReader(path);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                //Repalce [newusername] = signup user name   
+                MailText = MailText.Replace("[newusername]", cMail);
+                MailText = MailText.Replace("[promotion]", promotion);
+                MailText = MailText.Replace("[couponCode]", couponCode);
+
+
+                string subject = "Purchase Confirmation";
+                MailMessage _mailmsg = new MailMessage();
+
+                //Make TRUE because our body text is html  
+                _mailmsg.IsBodyHtml = true;
+
+                //Set From Email ID  
+                _mailmsg.From = new MailAddress(emailSender);
+
+                //Set To Email ID  
+                _mailmsg.To.Add(cMail);
+
+                //Set Subject  
+                _mailmsg.Subject = subject;
+
+                //Set Body Text of Email   
+                _mailmsg.Body = MailText;
+
+
+                //Now set your SMTP   
+                SmtpClient _smtp = new SmtpClient();
+
+                //Set HOST server SMTP detail  
+                _smtp.Host = emailSenderHost;
+
+                //Set PORT number of SMTP  
+                _smtp.Port = emailSenderPort;
+
+                //Set SSL --> True / False  
+                _smtp.EnableSsl = emailIsSSL;
+
+                //Set Sender UserEmailID, Password  
+                NetworkCredential _network = new NetworkCredential(emailSender, emailSenderPassword);
+                _smtp.Credentials = _network;
+
+                //Send Method will send your MailMessage create above.  
+                _smtp.Send(_mailmsg);
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+
+        }
+        public string generateCouponCode()
+        {
+            //string couponCode = "";
+            int allowedLength = 8;
+            string _allowedChars = "0123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ";
+            char[] chars = new char[allowedLength];
+            try
+            {
+                
+                Random randNum = new Random();
+               
+                int allowedCharCount = _allowedChars.Length;
+                for (int i = 0; i < allowedLength; i++)
+                {
+                    chars[i] = _allowedChars[(int)((_allowedChars.Length) * randNum.NextDouble())];
+                }
+               
+            }
+            catch (Exception)
+            {
+
+               // throw;
+            }
+            return new string(chars);
         }
 
     }
