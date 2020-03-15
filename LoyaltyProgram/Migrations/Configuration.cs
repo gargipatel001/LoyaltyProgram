@@ -84,15 +84,15 @@
             //    PartnerDesc = "Cineplex Movie",
             //    PartnerWebLink = "https://www.cineplex.com/"
 
-            //}) ; 
+            //});
 
             //------ Sample data For PromotionType Table-------
             //context.PromotionTypes.AddOrUpdate(_ => _.PromotionTypeId, new PromotionType()
             //{
             //    PromotionTypeId = 1,
-            //    PromotionTypeName= "GV"
+            //    PromotionTypeName = "GV"
 
-            //}); 
+            //});
 
             //------ Sample data For Promotion Table-------
             //context.Promotions.AddOrUpdate(_ => _.PromotionId, new Promotion()
@@ -138,8 +138,21 @@
             //    RoleId = 3,
             //    LevelId = 2,
             //    IsLoggedIn = true
-             
+
             //}) ;
+
+            //---Sample Data for FAQ Table---
+            //context.FAQs.AddOrUpdate(_ => _.FAQId, new FAQ()
+            //{
+            //    Question = "",
+            //    Answer = ""
+
+            //}, new FAQ()
+            //{
+            //    Question = "",
+            //    Answer = ""
+
+            //});
         }
     }
 }
