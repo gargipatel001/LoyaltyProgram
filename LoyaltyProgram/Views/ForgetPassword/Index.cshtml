@@ -1,0 +1,124 @@
+﻿@model LoyaltyProgram.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body login-card-body">
+        <p class="login-box-msg">You forgot your password? Here you can easily get a new password.</p>
+
+        @using (Html.BeginForm("ForgetPassword", "ForgetPassword", FormMethod.Post, new { id = "forgetPasswordForm" }))
+        {
+            <div class="input-group mb-3">
+                @Html.Kendo().TextBoxFor(_ => _.Email).HtmlAttributes(new { placeholder = "e.g. myname@example.net", required = "required", type = "email", data_email_msg = "Email format is not valid", @class = "form-control" })
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                    </div>
+                    <span class="k-invalid-msg" data-for="Email"></span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                @*<input type="password" class="form-control" placeholder="Password">*@
+                @Html.Kendo().TextBoxFor(_ => _.Password).HtmlAttributes(new { placeholder = "Enter Password", required = "required", type = "password", validationmessage = "Enter Password", @class = "form-control" })
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+                <span class="k-invalid-msg" data-for="Password"></span>
+            </div>
+            <div class="input-group mb-3">
+                @Html.Kendo().TextBoxFor(_ => _.CPassword).HtmlAttributes(new { placeholder = "Confirm Password", required = "required", type = "password", validationmessage = "Enter Password", @class = "form-control" })
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+                <span class="k-invalid-msg" data-for="CPassword"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        }
+
+        <p class="mt-3 mb-1">
+            @Html.ActionLink("Login", "Index", "Login")
+            @*<a href="login.html">Login</a>*@
+        </p>
+        @*<p class="mb-0">
+                <a href="register.html" class="text-center">Register a new membership</a>
+            </p>*@
+    </div>
+    <!-- /.login-card-body -->
+</div>
+@section Scripts
+
+{
+    <script>
+         var validator = $("#forgetPasswordForm").kendoValidator().data("kendoValidator");
+        var status = $(".status");
+ 
+        $('#forgetPasswordForm').submit(function (event) {
+            debugger
+            // var x = true;
+            event.preventDefault();
+            checkEmail(event);
+
+
+        });
+        function confirmPassword(event) {
+            var password = $("#Password");
+            var cPassword = $("#CPassword");
+            if (cPassword.val() != null && cPassword.val() != "" && password.val() != null && password.val() != "") {
+                if (cPassword.val() != password.val()) {
+                    $("#CPassword").addClass("k-textbox form-control k-invalid");
+                    $("#CPassword").next().show();
+                    $("#CPassword").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                    $("#CPassword").next().text("Password and Confirm Password doesnot match");
+                    event.preventDefault();
+                }
+                else {
+                    $("#CPassword").addClass("k-textbox form-control k-valid");
+                    $("#CPassword").next().hide();
+                    $("#CPassword").next().text("");
+                    return true;
+                }
+            }
+        }
+        function checkEmail(event) {
+            var email = $("#Email").val();
+            $.ajax({
+                url: "/ForgetPassword/checkMail",
+                data: { email: email },
+                type: "POST",
+                success: function (data) {
+
+                    if (data != "") {
+
+                        $("#Email").next().show();
+                        $("#Email").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
+                        $("#Email").next().text(data);
+                        return false;
+                    }
+                    else {
+
+                        // $("#signupform").submit();
+                        if (confirmPassword(event) == true) {
+                            $("#forgetPasswordForm").unbind('submit').submit();
+                        }
+
+                    }
+
+                }
+            });
+        }
+    </script>
+}
+
+

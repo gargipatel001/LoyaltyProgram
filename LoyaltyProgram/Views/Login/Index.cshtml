@@ -52,7 +52,7 @@
                 }
 
             <p class="mb-1">
-                <a href="forgot-password.html">Forgot password?</a>
+                @Html.ActionLink("Forgot Password?", "Index", "ForgetPassword", null, null)
                 @Html.ActionLink("Sign Up", "Index", "Signup", null, new { style = "float: right;" })
             </p>
             @*<p class="mb-0">
@@ -91,14 +91,14 @@
                         $("#Password").next().addClass("k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error");
                         $("#Password").next().text(data);
                     }
-                     else {
-                    window.location.href = '/Home/Index';
+                    else {
+                        window.location.href = '/Home/Index';
+                    }
+
                 }
-                  
-                }
-                
-               
-               
+
+
+
             }
         });
 
