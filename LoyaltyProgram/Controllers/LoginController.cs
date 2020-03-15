@@ -55,6 +55,8 @@ namespace LoyaltyProgram.Controllers
                         cvm.CustomerProvince = customer.CustomerProvince;
                         cvm.IsLoggedIn = customer.IsLoggedIn;
                         cvm.CustomerCardNo = customer.CustomerCardNo;
+                        cvm.CustomerPhoneNumber = customer.CustomerPhoneNumber;
+                        cvm.CustomerPostalCode = customer.CustomerPostalCode;
 
                         Session["Customer"] = cvm;
                     }

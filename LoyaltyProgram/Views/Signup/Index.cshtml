@@ -86,6 +86,7 @@
                     @(Html.Kendo().DatePickerFor(_ => _.CustomerDOB)
                                          .Name("CustomerDOB")
                                          .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "select DOB" })
+                                         .Max(DateTime.Now.ToShortDateString())
                     )
                     <span class="k-invalid-msg" data-for="CustomerDOB"></span>
                     <div class="input-group-append">
@@ -168,7 +169,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    @Html.Kendo().TextBoxFor(_ => _.CustomerCardNo).HtmlAttributes(new { placeholder = "Enter Loyalty Card Number", required = "required", validationmessage = "Enter Loyalty Card Number", @class = "form-control" })
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerCardNo).HtmlAttributes(new { placeholder = "Enter Loyalty Card Number", required = "required", validationmessage = "Enter Loyalty Card Number", @class = "form-control" , @maxlength = "16" })
                     <span class="k-invalid-msg" data-for="CustomerCardNo"></span>
                     <div class="input-group-append">
                         <div class="input-group-text">
@@ -176,10 +177,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <button id="btnSubmit" type="submit" class="btn btn-primary btn-block">Sign Up</button>
-                </div>
+                <div class="input-group mb-3">
+                    <div class="col-4">
+                        <button id="btnSubmit" type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                       
+                    </div>
+                    <div class="col-4">
 
+                        <a href="/Login/Index" class="btn btn-dark btn-block">Cancel</a>
+                    </div>
+                </div>
             }
 
         </div>

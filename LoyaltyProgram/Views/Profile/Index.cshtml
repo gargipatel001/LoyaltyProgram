@@ -1,0 +1,196 @@
+﻿
+@model LoyaltyProgram.ViewModels.CustomerViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+    <style>
+        .center_div {
+            margin: auto;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <!-- general form elements disabled -->
+
+        <div class="col-md-6 mx-auto">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"> MyProfile</h3>
+                </div>
+                @using (Html.BeginForm("UpdateProfile", "Profile", FormMethod.Post, new { id = "myprofileform" }))
+                {
+                   
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="customerFirstName"> First Name</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerFirstName).HtmlAttributes(new { @class = "form-control", validationmessage = "Enter First Name", required = "required", @readonly = "readonly" })
+                            <span class="k-invalid-msg" data-for="CustomerFirstName"></span>
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                        </div>
+                        <div class="form-group">
+                            <label for="customerLastName"> Last Name</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerLastName).HtmlAttributes(new { @class = "form-control", validationmessage = "Enter Last Name", required = "required", @readonly = "readonly" })
+                            <span class="k-invalid-msg" data-for="CustomerLastName"></span>
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                        </div>
+                        <div class="form-group">
+                            <label for="customerEmail"> Email</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerEmail).HtmlAttributes(new { placeholder = "e.g. myname@example.net", required = "required", @readonly = "readonly", type = "email", data_email_msg = "Email format is not valid", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCardNo"> Card Number</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerCardNo).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Enter Loyalty Card Number", @readonly = "readonly" })
+                            <span class="k-invalid-msg" data-for="CustomerCardNo"></span>
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                        </div>
+                        <div class="form-group">
+                            <label for="customerGender"> Gender</label>
+                            @(Html.Kendo().DropDownListFor(_ => _.CustomerGender)
+                                                                           .Name("CustomerGender")
+                                                                           .DataTextField("Text")
+                                                                           .DataValueField("Value")
+                                                                           //.Events(e => e.Change("change"))
+                                                                           .BindTo(new List<SelectListItem>() {
+
+                                                                               new SelectListItem() {
+                                                                                   Text = "F",
+                                                                                   Value = "F"
+                                                                               },
+                                                                               new SelectListItem() {
+                                                                                   Text = "M",
+                                                                                   Value = "M"
+                                                                               }
+                                                                           })
+                                                                           //.Value("1")
+                                                                           .HtmlAttributes(new { @class = "form-control" })
+                            )
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerGender"></span>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="customerDOB"> DOB</label>
+                            @(Html.Kendo().DatePickerFor(_ => _.CustomerDOB)
+                                                                         .Name("CustomerDOB")
+                                                                         .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select DOB" })
+                            )
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerDOB"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerAddress"> Address</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerAddress).HtmlAttributes(new { @class = "form-control", required = "required", @readonly = "readonly", validationmessage = "Enter Address" })
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerAddress"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCity"> City</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerCity).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Enter City", @readonly = "readonly" })
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerCity"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerProvince"> Province</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerProvince).HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Enter Province", @readonly = "readonly" })
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerProvince"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPostalCode"> Postal Code</label>
+                            @Html.Kendo().MaskedTextBoxFor(_ => _.CustomerPostalCode).Mask("L0L0L0").HtmlAttributes(new { placeholder = "Enter Postal Code (A1A1A1)", @readonly = "readonly", @class = "form-control", required = "required", validationmessage = "Enter Postal Code" })
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            <span class="k-invalid-msg" data-for="CustomerPostalCode"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerPhone"> Phone Number</label>
+                            @Html.Kendo().TextBoxFor(_ => _.CustomerPhoneNumber).HtmlAttributes(new { @class = "form-control", pattern = "\\d{10}", required = "required", type = "tel", validationmessage = "Enter ten digits number", @readonly = "readyonly" })
+                            <span class="k-invalid-msg" data-for="CustomerPhoneNumber"></span>
+                            @*<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button type="button" id="btnEdit" class="btn btn-primary"> Edit</button>
+                                <button type="submit" id="btnSubmit" class="btn btn-primary" style="display:none;"> Update</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" id="btnCancel" class="btn btn-dark"> Cancel</button>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+    var validator = $("#myprofileform").kendoValidator().data("kendoValidator");
+    var status = $(".status");
+    $(document).ready(function () {
+        var validator = $("form").kendoValidator().data("kendoValidator");
+        var status = $(".status");
+        //$("#CustomerDOB").kendoDatePicker();
+        $("#CustomerDOB").data('kendoDatePicker').enable(false);
+        $("#CustomerGender").data("kendoDropDownList").enable(false);
+    });
+    $("#btnEdit").click(function () {
+        $("#btnEdit").css('display', 'none')
+        $("#btnSubmit").css('display', 'block');
+        //alert( "Handler for .click() called." );
+        $("#CustomerFirstName").attr("readonly", false);
+        $("#CustomerLastName").attr("readonly", false);
+        //$("#CustomerEmail").attr("readonly", false);
+        //$("#CustomerCardNo").attr("readonly", false);
+       // $("#CustomerGender").attr("readonly", false);
+        $("#CustomerGender").data("kendoDropDownList").enable(true);
+        $("#CustomerDOB").data('kendoDatePicker').enable(true);
+        // $("#CustomerDOB").attr("readonly", false);
+        $("#CustomerAddress").attr("readonly", false);
+        $("#CustomerCity").attr("readonly", false);
+        $("#CustomerProvince").attr("readonly", false);
+        $("#CustomerPostalCode").attr("readonly", false);
+        $("#CustomerPhoneNumber").attr("readonly", false);
+    });
+    $("#btnCancel").click(function () {
+        window.location = "/Profile";
+        //$("#btnEdit").css('display', 'block')
+        //$("#btnSubmit").css('display', 'none');
+        //$("#CustomerFirstName").attr("readonly", true);
+        //$("#CustomerLastName").attr("readonly", true);
+        //$("#CustomerEmail").attr("readonly", true);
+        //$("#CustomerCardNo").attr("readonly", true);
+        //$("#CustomerGender").attr("readonly", true);
+        //// $("#CustomerDOB").attr("readonly", false);
+        //$("#CustomerDOB").data('kendoDatePicker').enable(false);
+        //$("#CustomerAddress").attr("readonly", true);
+        //$("#CustomerCity").attr("readonly", true);
+        //$("#CustomerProvince").attr("readonly", true);
+        //$("#CustomerPostalCode").attr("readonly", true);
+        //$("#CustomerPhoneNumber").attr("readonly", true);
+    });
+
+</script>
+
+
