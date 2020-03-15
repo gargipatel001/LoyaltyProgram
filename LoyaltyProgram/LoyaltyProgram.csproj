@@ -130,10 +130,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\MyProfileController.cs" />
     <Compile Include="Controllers\PointRedeemHistoryController.cs" />
     <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -143,14 +143,6 @@
     <Compile Include="DAL\LoyaltyProgramContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003111953137_AddedPromotionPoints.cs" />
-    <Compile Include="Migrations\202003111953137_AddedPromotionPoints.designer.cs">
-      <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003130217222_ChangeInFAQTable.cs" />
-    <Compile Include="Migrations\202003130217222_ChangeInFAQTable.designer.cs">
-      <DependentUpon>202003130217222_ChangeInFAQTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -164,6 +156,7 @@
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ContactUsViewModel.cs" />
     <Compile Include="ViewModels\CustomerLevelViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\FAQViewModel.cs" />
@@ -2605,6 +2598,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Templates\ContactUsMail.html" />
+    <Content Include="Templates\CustomerContactUsMail.html" />
     <Content Include="Templates\RedeemPointsConfirmation.html" />
     <Content Include="Templates\SignUpMail.html" />
     <Content Include="Web.config" />
@@ -2626,13 +2621,17 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\MyProfile\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Signup\Index.cshtml" />
+    <Content Include="Views\FAQ\Index.cshtml" />
+    <Content Include="Views\PointRedeemHistory\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\RedeemPoints\Index.cshtml" />
+    <Content Include="Views\ContactUs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2650,14 +2649,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003111953137_AddedPromotionPoints.resx">
-      <DependentUpon>202003111953137_AddedPromotionPoints.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003130217222_ChangeInFAQTable.resx">
-      <DependentUpon>202003130217222_ChangeInFAQTable.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
