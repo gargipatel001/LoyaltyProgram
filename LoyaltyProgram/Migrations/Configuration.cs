@@ -144,13 +144,13 @@
             //---Sample Data for FAQ Table---
             //context.FAQs.AddOrUpdate(_ => _.FAQId, new FAQ()
             //{
-            //    Question = "",
-            //    Answer = ""
+            //    Question = "How can I find out how many points I have?",
+            //    Answer = "Find out how many points you have simply by logging into your account"
 
             //}, new FAQ()
             //{
-            //    Question = "",
-            //    Answer = ""
+            //    Question = "I forgot my password. How do I reset it?",
+            //    Answer = "Resetting your password is easy. Just go to Reset Password Page and you will be able to reset your password."
 
             //});
         }
