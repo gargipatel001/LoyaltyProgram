@@ -135,6 +135,7 @@
     <Compile Include="Controllers\ForgetPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\PointRedeemHistoryController.cs" />
     <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -2623,10 +2624,6 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Roles\Create.cshtml" />
-    <Content Include="Views\Roles\Delete.cshtml" />
-    <Content Include="Views\Roles\Details.cshtml" />
-    <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Signup\Index.cshtml" />
     <Content Include="Views\FAQ\Index.cshtml" />
@@ -2635,6 +2632,9 @@
     <Content Include="Views\RedeemPoints\Index.cshtml" />
     <Content Include="Views\ContactUs\Index.cshtml" />
     <Content Include="Views\ForgetPassword\Index.cshtml" />
+    <Content Include="Views\Roles\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Partner\Index.cshtml" />
+    <Content Include="Views\Partner\EditorTemplates\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

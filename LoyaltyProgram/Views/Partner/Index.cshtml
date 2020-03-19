@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<LoyaltyProgram.Models.Roles>
-
 @{
-    ViewBag.Title = "Index";
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles
@@ -12,20 +11,23 @@
         }
     </style>
 }
-@(Html.Kendo().Grid<LoyaltyProgram.Models.Roles>()
-          .Name("gvRoles")
+
+@(Html.Kendo().Grid<LoyaltyProgram.Models.Partner>()
+          .Name("gvPartners")
           .Columns(columns =>
           {
               columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
-              columns.Bound(c => c.RoleId).Width(100).Visible(false);
-              columns.Bound(c => c.RoleName).Width(300).Title("Role");
-              columns.Bound(c => c.RoleDescription).Width(100).Title("Description");
+              columns.Bound(c => c.PartnerId).Width(30).Visible(false);
+              columns.Bound(c => c.PartnerName).Width(30).Title("Name");
+              columns.Bound(c => c.PartnerLogo).Title("Image").ClientTemplate("<img src='/Content/#=PartnerLogo#' alt='IMG' Title='IMG' height='62' width='62'/>").Width(25).HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Filterable(false);
+              columns.Bound(c => c.PartnerDesc).Width(100).Title("Description");
+              columns.Bound(c => c.PartnerWebLink).Width(100).Title("Web Link");
           })
           .Sortable()
           .Filterable()
           .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("databoundEvent"); })
-          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Roles").Name("customedit").Width(420).Height(330)))
-          .ToolBar(toolbar => { toolbar.Create().Text("Add New Roles"); })
+          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Partner").Height(500).Width(430).Resizable().Name("customedit")))
+          .ToolBar(toolbar => { toolbar.Create().Text("Add New Partners"); })
           .Pageable(pageable => pageable
             .Refresh(true)
             .PageSizes(true)
@@ -33,29 +35,32 @@
           .DataSource(dataSource => dataSource
               .Ajax()
               .Model(model =>
-                {
-                    model.Id(m => m.RoleId);
-               })
-              .Events(events =>
-               {
-
-                events.RequestEnd("onRequestEnd");
+              {
+                  model.Id(m => m.PartnerId);
               })
-               .Create("Create", "Roles")
-               .Update(update => update.Action("Update", "Roles"))
-              .Read(read => read.Action("Select", "Roles"))
+              .Events(events =>
+              {
+
+                  events.RequestEnd("onRequestEnd");
+              })
+               .Create("Create", "Partner")
+               .Update(update => update.Action("Update", "Partner"))
+              .Read(read => read.Action("Read", "Partner"))
               .PageSize(10)
           )
 )
+
 <div class="col-sm-3">
 
     <span id="popupNotification"></span>
 
 </div>
 
-@section Scripts{
+
+@section Scripts
+{
     <script>
-            function ShowNotification(msg, type) {
+        function ShowNotification(msg, type) {
         var popupNotification = $("#popupNotification").kendoNotification({
             autoHideAfter: 7000,
             hideOnClick: true,
@@ -75,24 +80,25 @@
             }
         }).data("kendoNotification");
         popupNotification.show(msg, type);
-    }
-        function databoundEvent(e) {
+        } 
+
+         function databoundEvent(e) {
             setKendoGridButtons(e.sender.wrapper[0].id);
         }
         function gvonCancel(e) {
             setKendoGridButtons(e.sender.wrapper[0].id);
         }
 
-        function setKendoGridButtons(gvRoles) {
+        function setKendoGridButtons(gvPartners) {
             setTimeout(function () {
-                $("#" + gvRoles + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
-                $("#" + gvRoles + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+                $("#" + gvPartners + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvPartners + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
 
             });
         }
         function onRequestEnd(e) {
             if (e.type == "create") {
-                $("#gvRoles").data("kendoGrid").dataSource.read();
+                $("#gvPartners").data("kendoGrid").dataSource.read();
                 if (e.response != null && e.response.Errors == null) {
 
                   ShowNotification("Success", "success");
@@ -100,14 +106,16 @@
 
             }
         }
+
         function insertPopupCaption(e) {
 
             if (e.model.isNew()) {
-
+                debugger
                 $('.k-grid-update').text("Create");
-                 $("#txtRoleName").attr("readonly", false);
+                $("#txtPartnerName").attr("readonly", false);
+                $("#imgPartnerLogo").hide();
                 $('.k-grid-update').on('click', function (event) {
-                    var str = $("#txtRoleName").val()
+                    var str = $("#txtPartnerName").val()
                     ValidateProcess(event, str, function (test) {
 
                         if (test == false) {
@@ -123,17 +131,24 @@
             }
 
             else {
-                $("#txtRoleName").attr("readonly", true);
+                debugger
+                e.model.dirty = true;
+                $("#txtPartnerName").attr("readonly", true);
+                var src = $("#partnerLogo").val();
+                $("#imgPartnerLogo").attr("src", "/Content/"+src);
+                $("#imgPartnerLogo").show();
+                var value = $("#PartnerDesc").val();
+                
                 //$("#txtProjectID").attr("readonly", true);
                 e.container.data("kendoWindow").bind("deactivate", function () {
-                    $("#gvRoles").data("kendoGrid").dataSource.read();
+                    $("#gvPartners").data("kendoGrid").dataSource.read();
                 })
             }
         }
-            function ValidateProcess(event, str, fn) {
+        function ValidateProcess(event, str, fn) {
         $.ajax({
             type: 'GET',
-            url: "@Url.Action("CheckRole", "Roles")?roleName=" + str,
+            url: "@Url.Action("CheckPartner", "Partner")?partnerName=" + str,
             dataType: 'json',
             async: false,
             success: function (data) {
@@ -143,7 +158,7 @@
                     appendTo: "#appendto"
                 }).data("kendoNotification");
 
-                staticNotification.show(kendo.toString("Role already exists"), "error");
+                staticNotification.show(kendo.toString("Partner already exists"), "error");
                 var container = $(staticNotification.options.appendTo);
                 container.scrollTop(container[0].scrollHeight);
                 fn(false);
@@ -151,6 +166,5 @@
         }
         });
     }
-
-    </script>
+    </Script>
 }

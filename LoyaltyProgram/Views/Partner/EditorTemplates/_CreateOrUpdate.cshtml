@@ -1,0 +1,76 @@
+﻿@model LoyaltyProgram.Models.Partner
+@{
+    Layout = null;
+    var imagePath = @Model.PartnerLogo;
+
+}
+
+
+<div class="card">
+    <div class="card-body">
+        @Html.HiddenFor(_=>_.PartnerLogo,new { id="partnerLogo"})
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="partnerName">Partner Name<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.PartnerName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtPartnerName" })
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="partnerLogo">Partner Logo </label><label> (gif/jpg/png)</label>
+                    <img src="@imagePath" id="imgPartnerLogo" style="height:62px; width:62px;" />
+                    @(Html.Kendo().Upload().Name("files").Multiple(false).Async(a => a
+                .Save("Save", "Partner")
+                .Remove("Remove", "Partner")
+                .AutoUpload(true)
+                 ).Validation(validation => validation.AllowedExtensions(new string[] { ".gif", ".jpg", ".png" })).HtmlAttributes(new { aria_label = "files" }))
+
+
+                </div>
+                @*<div class="demo-hint">You can only upload <strong>GIF</strong>, <strong>JPG</strong>, <strong>PNG</strong> files.</div>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Partner Description</label>
+
+                    @Html.Kendo().TextBoxFor(m => m.PartnerDesc).HtmlAttributes(new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Web Link</label>
+
+                    @Html.Kendo().TextBoxFor(m => m.PartnerWebLink).HtmlAttributes(new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <div id="appendto" class="demo-section k-content"></div>
+                    <span id="staticNotification">  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
