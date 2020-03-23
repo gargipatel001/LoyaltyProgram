@@ -137,6 +137,8 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\PointRedeemHistoryController.cs" />
+    <Compile Include="Controllers\PromotionController.cs" />
+    <Compile Include="Controllers\PromotionTypeController.cs" />
     <Compile Include="Controllers\RedeemPointsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -2635,6 +2637,10 @@
     <Content Include="Views\Roles\EditorTemplates\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Partner\Index.cshtml" />
     <Content Include="Views\Partner\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\PromotionType\Index.cshtml" />
+    <Content Include="Views\PromotionType\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Promotion\Index.cshtml" />
+    <Content Include="Views\Promotion\EditorTemplates\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

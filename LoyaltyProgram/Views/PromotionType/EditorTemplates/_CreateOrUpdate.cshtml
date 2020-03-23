@@ -1,0 +1,36 @@
+﻿@model LoyaltyProgram.Models.PromotionType
+@{
+    Layout = null;
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Type<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.PromotionTypeName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtPromotionTypeName" })
+                </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <div id="appendto" class="demo-section k-content"></div>
+                    <span id="staticNotification">  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>

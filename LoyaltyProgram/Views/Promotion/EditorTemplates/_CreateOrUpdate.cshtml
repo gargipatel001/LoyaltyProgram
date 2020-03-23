@@ -1,0 +1,146 @@
+﻿@model LoyaltyProgram.Models.Promotion
+@{
+    Layout = null;
+}
+
+
+<div class="card">
+    <div class="card-body">
+        @Html.HiddenFor(_ => _.PromotionId)
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Name<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.PromotionName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtPromotionTypeName" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Title<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.PromotionTitle).HtmlAttributes(new { @class = "form-control", @required = "required" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Description<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.PromotionDesc).HtmlAttributes(new { @class = "form-control", @required = "required" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Start Date<span style="color:red">*</span></label>
+                    @(Html.Kendo().DatePickerFor(_ => _.PromotionStartDate)
+                                       .Name("PromotionStartDate")
+                                       .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select Promotion Start Date" })
+                                       .Min(DateTime.Now.ToShortDateString())
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion End Date<span style="color:red">*</span></label>
+                    @(Html.Kendo().DatePickerFor(_ => _.PromotionEndDate)
+                                       .Name("PromotionEndDate")
+                                       .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select DOB" })
+                                       .Min(DateTime.Now.ToShortDateString())
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Partners<span style="color:red">*</span></label>
+                    @(Html.Kendo().DropDownListFor(_ => _.PartnerId)
+                        .Name("PartnerId")
+                          .DataTextField("PartnerName")
+                          .DataValueField("PartnerId")
+                           .OptionLabel("Select")
+                           .ValuePrimitive(true)
+                          .DataSource(source =>
+                                  {
+                              source.Read(read =>
+                              {
+                                  read.Action("BindPromotionPartners", "Promotion");
+                              });
+                          })
+                           .HtmlAttributes(new { @class = "form-control", @required = "required", id = "ddlpromotionPartners" })
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Type<span style="color:red">*</span></label>
+                    @(Html.Kendo().DropDownListFor(_ => _.PromotionTypeId)
+                     .Name("PromotionTypeId")
+                       .DataTextField("PromotionTypeName")
+                       .DataValueField("PromotionTypeId")
+                       .OptionLabel("Select")
+                       .ValuePrimitive(true)
+                       .DataSource(source =>
+                               {
+                           source.Read(read =>
+                           {
+                               read.Action("BindPromotionTypes", "Promotion");
+                           });
+                       })
+                       .HtmlAttributes(new { @class = "form-control", @required = "required", id = "ddlpromotionType" })
+                    )
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Promotion Points<span style="color:red">*</span></label>
+                    @(Html.Kendo().NumericTextBoxFor(_ => _.PromotionPoints)
+                       .Name("PromotionPoints")
+                       .Format("#")
+                       .Min(100)
+                       //.Max(100)
+                       .Value(100)
+                       .Decimals(0)
+                       .HtmlAttributes(new { @class = "form-control", @required = "required" })
+                    )
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <div id="appendto" class="demo-section k-content"></div>
+                    <span id="staticNotification">  </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+

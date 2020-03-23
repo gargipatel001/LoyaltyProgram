@@ -21,7 +21,7 @@
                         //columns.Bound(c => c.Customer.CustomerFirstName+" "+ c.Customer.CustomerLastName).Width(300).Title("");
                          columns.Bound(c => c.Promotion.PromotionName).Width(100).Title("Promotion");
                          columns.Bound(c => c.PointsRedeemed).Width(100).Title("Points Redeemed");
-                          columns.Bound(c => c.PointsRedeemedOn).Width(200).Title("Redeemed On").Format("{0:MM/dd/yyyy}");
+                          columns.Bound(c => c.PointsRedeemedOn).Width(200).Title("Redeemed On").ClientTemplate("#= kendo.toString(PointsRedeemedOn, \"MM/dd/yyyy hh:mm tt\") #");
                     })
                     //.Scrollable()
                     .Sortable()

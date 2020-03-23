@@ -1,0 +1,156 @@
+﻿@model IEnumerable<LoyaltyProgram.Models.PromotionType>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+    <style>
+        .k-window-titlebar .k-window-actions {
+            position: relative !important;
+        }
+    </style>
+}
+@(Html.Kendo().Grid<LoyaltyProgram.Models.PromotionType>()
+          .Name("gvPromotionTypes")
+          .Columns(columns =>
+          {
+              columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+              columns.Bound(c => c.PromotionTypeId).Width(100).Visible(false);
+              columns.Bound(c => c.PromotionTypeName).Width(300).Title("Promotion Type");
+              //columns.Bound(c => c.RoleDescription).Width(100).Title("Description");
+          })
+          .Sortable()
+          .Filterable()
+          .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("databoundEvent"); })
+          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Promotion Type").Name("customedit").Width(420).Height(250)))
+          .ToolBar(toolbar => { toolbar.Create().Text("Add New Promotion Type"); })
+          .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+          .DataSource(dataSource => dataSource
+              .Ajax()
+              .Model(model =>
+                {
+                    model.Id(m => m.PromotionTypeId);
+               })
+              .Events(events =>
+               {
+
+                events.RequestEnd("onRequestEnd");
+              })
+               .Create("Create", "PromotionType")
+               .Update(update => update.Action("Update", "PromotionType"))
+              .Read(read => read.Action("Select", "PromotionType"))
+              .PageSize(10)
+          )
+)
+<div class="col-sm-3">
+
+    <span id="popupNotification"></span>
+
+</div>
+
+@section Scripts{
+    <script>
+            function ShowNotification(msg, type) {
+        var popupNotification = $("#popupNotification").kendoNotification({
+            autoHideAfter: 7000,
+            hideOnClick: true,
+            animation: {
+                open: {
+                    effects: "slideIn:left"
+                },
+                close: {
+                    effects: "slideIn:left",
+                    reverse: true
+                }
+            },
+            position: {
+                pinned: true,
+                bottom: 60,
+                right: 40
+            }
+        }).data("kendoNotification");
+        popupNotification.show(msg, type);
+    }
+        function databoundEvent(e) {
+            setKendoGridButtons(e.sender.wrapper[0].id);
+        }
+        function gvonCancel(e) {
+            setKendoGridButtons(e.sender.wrapper[0].id);
+        }
+
+        function setKendoGridButtons(gvPromotionTypes) {
+            setTimeout(function () {
+                $("#" + gvPromotionTypes + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvPromotionTypes + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+
+            });
+        }
+        function onRequestEnd(e) {
+            if (e.type == "create") {
+                $("#gvPromotionTypes").data("kendoGrid").dataSource.read();
+                if (e.response != null && e.response.Errors == null) {
+
+                  ShowNotification("Success", "success");
+                }
+
+            }
+        }
+        function insertPopupCaption(e) {
+
+            if (e.model.isNew()) {
+
+                $('.k-grid-update').text("Create");
+                 $("#txtPromotionTypeName").attr("readonly", false);
+                $('.k-grid-update').on('click', function (event) {
+                    var str = $("#txtPromotionTypeName").val()
+                    ValidateProcess(event, str, function (test) {
+
+                        if (test == false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                        }
+
+                    });
+
+                });
+
+            }
+
+            else {
+                $("#txtPromotionTypeName").attr("readonly", true);
+                //$("#txtProjectID").attr("readonly", true);
+                e.container.data("kendoWindow").bind("deactivate", function () {
+                    $("#gvPromotionTypes").data("kendoGrid").dataSource.read();
+                })
+            }
+        }
+            function ValidateProcess(event, str, fn) {
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("CheckPromotionType", "PromotionType")?promotionType=" + str,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+            if (data > 0) {
+
+                var staticNotification = $("#staticNotification").kendoNotification({
+                    appendTo: "#appendto"
+                }).data("kendoNotification");
+
+                staticNotification.show(kendo.toString("Promotion Type already exists"), "error");
+                var container = $(staticNotification.options.appendTo);
+                container.scrollTop(container[0].scrollHeight);
+                fn(false);
+            }
+        }
+        });
+    }
+
+    </script>
+}

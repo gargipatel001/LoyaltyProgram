@@ -17,11 +17,13 @@ namespace LoyaltyProgram.ViewModels
         public DateTime? PromotionStartDate { get; set; }
         public DateTime? PromotionEndDate { get; set; }
         public int PartnerId { get; set; }
+        public string PartnerName { get; set; }
         public int PromotionPoints { get; set; }
         public PartnerViewModel Partner { get; set; }
         public int PromotionTypeId { get; set; }
         public PromotionViewModel PromotionType { get; set; }
         public double  customerLoyaltyPoints { get; set; }
         public bool isRedeemable { get; set; }
+        public string promotionType { get; set; }
     }
 }

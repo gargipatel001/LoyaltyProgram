@@ -1,0 +1,193 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+    <style>
+        .k-window-titlebar .k-window-actions {
+            position: relative !important;
+        }
+    </style>
+}
+@(Html.Kendo().Grid<LoyaltyProgram.Models.Promotion>()
+          .Name("gvPromotions")
+          .Columns(columns =>
+          {
+              columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+              //columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+              columns.Bound(c => c.PromotionId).Width(100).Visible(false);
+              columns.Bound(c => c.PromotionName).Width(200).Title("Promotion");
+              columns.Bound(c => c.PromotionDesc).Width(200).Title("Description");
+              columns.Bound(c => c.PromotionPoints).Width(150).Title("Points");
+              columns.Bound(c => c.PromotionStartDate).Width(150).Title("Start Date").ClientTemplate("#= kendo.toString(PromotionStartDate, \"MM/dd/yyyy hh:mm tt\") #");
+              columns.Bound(c => c.PromotionEndDate).Width(150).Title("End Date").ClientTemplate("#= kendo.toString(PromotionEndDate, \"MM/dd/yyyy hh:mm tt\") #");
+              columns.Bound(c => c.PartnerId).Visible(false).Width(150).Title("Partner");
+              columns.Bound(c => c.Partner.PartnerName).Width(150).Title("Partner");
+              columns.Bound(c => c.PromotionTypeId).Visible(false).Width(150).Title("Partner");
+              columns.Bound(c => c.PromotionType.PromotionTypeName).Width(50).Title("Type");
+          })
+          .Sortable()
+          .Filterable()
+          .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("databoundEvent"); })
+          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Promotions").Name("customedit").Width(420).Height(330)))
+          .ToolBar(toolbar => { toolbar.Create().Text("Add New Promotion"); })
+          .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+           .DataSource(dataSource => dataSource
+              .Custom()
+              .Type("aspnetmvc-ajax")
+                //.Model(model =>
+                //  {
+                //      model.Id(m => m.PromotionId);
+                // }
+                .PageSize(10)
+               .Transport(transport => transport
+                .Read(read => read.Action("Select", "Promotion"))
+               .Create(create => create.Action("Create", "Promotion"))
+                .Update(update => update.Action("Update", "Promotion"))
+                )
+                 .Schema(schema => schema
+                                .Data("Data")
+                                .Total("Total")
+                                .Model(model =>
+                                {
+
+                                    model.Id(m => m.PromotionId);
+                                    model.Field("PromotionStartDate", typeof(DateTime));
+                                    model.Field("PromotionEndDate", typeof(DateTime));
+                                    model.Field("PromotionPoints", typeof(int));
+                                    model.Field(_ => _.Partner).DefaultValue(new LoyaltyProgram.Models.Partner() { });
+                                    model.Field(_ => _.PromotionType).DefaultValue(new LoyaltyProgram.Models.PromotionType() { });
+
+
+
+                                })
+                            )
+              .Events(events =>
+              {
+
+                  events.RequestEnd("onRequestEnd");
+              })
+
+          // .Read(read=>read.Action("Select", "Promotion"))
+          // .Create(create=>create.Action("Create","Promotion"))
+          //  .Update(update => update.Action("Update", "Promotion"))
+          //.PageSize(10)
+          )
+
+
+
+)
+)
+<div class="col-sm-3">
+
+    <span id="popupNotification"></span>
+
+</div>
+
+@section Scripts{
+    <script>
+            function ShowNotification(msg, type) {
+        var popupNotification = $("#popupNotification").kendoNotification({
+            autoHideAfter: 7000,
+            hideOnClick: true,
+            animation: {
+                open: {
+                    effects: "slideIn:left"
+                },
+                close: {
+                    effects: "slideIn:left",
+                    reverse: true
+                }
+            },
+            position: {
+                pinned: true,
+                bottom: 60,
+                right: 40
+            }
+        }).data("kendoNotification");
+        popupNotification.show(msg, type);
+    }
+        function databoundEvent(e) {
+            setKendoGridButtons(e.sender.wrapper[0].id);
+        }
+        function gvonCancel(e) {
+            setKendoGridButtons(e.sender.wrapper[0].id);
+        }
+
+        function setKendoGridButtons(gvPromotions) {
+            setTimeout(function () {
+                $("#" + gvPromotions + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvPromotions + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+
+            });
+        }
+        function onRequestEnd(e) {
+            if (e.type == "create") {
+                $("#gvPromotions").data("kendoGrid").dataSource.read();
+                if (e.response != null && e.response.Errors == null) {
+
+                  ShowNotification("Success", "success");
+                }
+
+            }
+        }
+        function insertPopupCaption(e) {
+
+            if (e.model.isNew()) {
+               
+                $('.k-grid-update').text("Create");
+                 $("#txtPromotionTypeName").attr("readonly", false);
+               
+
+            }
+
+            else {
+
+                var partnersdropdownlist = $("#ddlpromotionPartners").data("kendoDropDownList");
+                partnersdropdownlist.value(e.model.PartnerId);
+                partnersdropdownlist.enable(false);
+
+                var promotionTypedropdownlist = $("#ddlpromotionType").data("kendoDropDownList");
+                promotionTypedropdownlist.value(e.model.PromotionTypeId);
+                promotionTypedropdownlist.enable(false);
+
+                var numerictextbox = $("#PromotionPoints").data("kendoNumericTextBox");
+                numerictextbox.value(e.model.PromotionPoints);
+
+                $("#txtPromotionTypeName").attr("readonly", true);
+                //$("#txtProjectID").attr("readonly", true);
+                e.container.data("kendoWindow").bind("deactivate", function () {
+                    $("#gvPromotions").data("kendoGrid").dataSource.read();
+                })
+            }
+        }
+            @*function ValidateProcess(event, str, fn) {
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("CheckRole", "Promotions")?roleName=" + str,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+            if (data > 0) {
+
+                var staticNotification = $("#staticNotification").kendoNotification({
+                    appendTo: "#appendto"
+                }).data("kendoNotification");
+
+                staticNotification.show(kendo.toString("Role already exists"), "error");
+                var container = $(staticNotification.options.appendTo);
+                container.scrollTop(container[0].scrollHeight);
+                fn(false);
+            }
+        }
+        });
+    }*@
+
+    </script>
+}
+
