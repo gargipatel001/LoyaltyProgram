@@ -25,6 +25,13 @@ namespace LoyaltyProgram.Controllers
                 }
                 else
                 {
+                    if (Session["User"] != null)
+                    {
+                        User user = new User();
+                        user = (User)Session["User"];
+                        //cvm = (CustomerViewModel)Session["Customer"];
+                        return View("AdminHome",user);
+                    }
                     return RedirectToAction("Index", "Login");
                 }
             }

@@ -45,6 +45,8 @@ namespace LoyaltyProgram.Models
         public int RoleId { get; set; }
         public Roles Role { get; set; }
         public int LevelId { get; set; }
+        [DefaultValue("true")]
+        public bool IsActive { get; set; }
         public CustomerLevel Level { get; set; }
         ICollection<RewardPointHistory> RewardPointHistories { get; set; }
 

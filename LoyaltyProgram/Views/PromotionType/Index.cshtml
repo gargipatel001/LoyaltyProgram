@@ -19,11 +19,12 @@
               columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
               columns.Bound(c => c.PromotionTypeId).Width(100).Visible(false);
               columns.Bound(c => c.PromotionTypeName).Width(300).Title("Promotion Type");
+               columns.Command(command => command.Custom("Change Status").HtmlAttributes(new { @class = "btn btn-primary", @id = "btnstyle", visible = false }).Click("UpdateStatus")).Width(30).HtmlAttributes(new { align = "center" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
               //columns.Bound(c => c.RoleDescription).Width(100).Title("Description");
           })
           .Sortable()
           .Filterable()
-          .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("databoundEvent"); })
+          .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("HideButtons"); })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Promotion Type").Name("customedit").Width(420).Height(250)))
           .ToolBar(toolbar => { toolbar.Create().Text("Add New Promotion Type"); })
           .Pageable(pageable => pageable
@@ -47,6 +48,13 @@
               .PageSize(10)
           )
 )
+<div id="modalWindow">
+    <div style="padding-bottom:8px;"><h5>Are you sure you want to change status?</h5></div>
+    <div style="text-align:center;padding-bottom:6px;">
+        <button id="btnyes" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">Yes</button>&nbsp;&nbsp;&nbsp;
+        <button id="btnno" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">No</button>
+    </div>
+</div>
 <div class="col-sm-3">
 
     <span id="popupNotification"></span>
@@ -55,6 +63,79 @@
 
 @section Scripts{
     <script>
+         var wnd;
+         $(document).ready(function () {
+
+        wnd = $("#modalWindow").kendoWindow({
+            title: "Confirmation!",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 300
+        }).data("kendoWindow");
+         });
+         function HideButtons(e) {
+            
+        setKendoGridButtons(e.sender.wrapper[0].id);
+
+        var grid = $("#gvPromotionTypes").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            if (gridData[i].IsActive != null) {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+
+                if (gridData[i].IsActive == true) {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Deactivate");
+                    $(currenRow).find(".k-grid-edit").show();
+
+                }
+                else {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Activate");
+                    $(currenRow).find(".k-grid-edit").hide();
+
+                }
+
+            }
+        }
+        };
+         function UpdateStatus(e) {
+            
+            
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        wnd.center().open();
+
+        $("#btnyes").unbind().click(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '@Url.Action("UpdateStatus", "PromotionType")',
+                data: { Id: dataItem.PromotionTypeId },
+                //async: false,
+                success: function (Data) {
+
+                    $("#gvPromotionTypes").data("kendoGrid").dataSource.read();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('error');
+                }
+            })
+            wnd.close();
+        });
+
+        $("#btnno").unbind().click(function () {
+            wnd.close();
+            topPropagation();
+        });
+
+
+
+        };
             function ShowNotification(msg, type) {
         var popupNotification = $("#popupNotification").kendoNotification({
             autoHideAfter: 7000,

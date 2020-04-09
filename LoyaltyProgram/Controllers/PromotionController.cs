@@ -25,7 +25,7 @@ namespace LoyaltyProgram.Controllers
         {
 
             List<Partner> promotionPartners = new List<Partner>();
-            promotionPartners = db.Partners.ToList();
+            promotionPartners = db.Partners.Where(_=>_.IsActive == true).ToList();
             List<PartnerViewModel> partnersViewModel = new List<PartnerViewModel>();
             foreach (var item in promotionPartners)
             {
@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Controllers
         public JsonResult BindPromotionTypes()
         {
             List<PromotionType> promotionTypes = new List<PromotionType>();
-            promotionTypes = db.PromotionTypes.ToList();
+            promotionTypes = db.PromotionTypes.Where(_ => _.IsActive == true).ToList();
             List<PromotionTypeViewModel> promotionTypesViewModel = new List<PromotionTypeViewModel>();
             foreach (var item in promotionTypes)
             {
@@ -125,6 +125,33 @@ namespace LoyaltyProgram.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdateStatus(int Id)
+        {
+            try
+            {
+                Promotion promotion = new Promotion();
+                promotion = db.Promotions.Where(_ => _.PromotionId == Id).FirstOrDefault();
+                if (promotion != null && promotion.PromotionId > 0)
+                {
+                    promotion.IsActive = !promotion.IsActive;
+                    db.Entry(promotion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { status = "Success", message = "Success" });
+                }
+                else {
+                    return Json(new { status = "Error", message = "Error" });
+                }
+              
+
+            }
+            catch (Exception ex)
+            {
+                //ErrorLogger.LogError("UpdateStatus();", ex);
+            }
+            return RedirectToAction("Index");
+
         }
     }
 }

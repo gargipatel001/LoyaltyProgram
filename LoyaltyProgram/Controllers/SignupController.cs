@@ -45,6 +45,7 @@ namespace LoyaltyProgram.Controllers
                     customer.CreatedOn = DateTime.Now;
                     customer.CustomerLoyaltyPoints = 10000;
                     customer.LevelId = getCustomerLevelId(customerViewModel.CustomerLoyaltyPoints);
+                    customer.IsActive = true;
                    db.Customers.Add(customer);
                    db.SaveChanges();
                     sendMail(customerViewModel.CustomerEmail);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace LoyaltyProgram.Models
 {
@@ -19,7 +20,11 @@ namespace LoyaltyProgram.Models
         [StringLength(25)]
         public String UserLastName { get; set; }
         public DateTime CreatedOn { get; set; }
+        public bool isLoggedIn { get; set; }
+      
         public int RoleId { get; set; }
+        [DefaultValue("true")]
+        public bool IsActive { get; set; }
         public Roles Role { get; set; }
     }
 }

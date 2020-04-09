@@ -23,11 +23,12 @@ namespace LoyaltyProgram.Controllers
         {
             String message = "";
             Customer customer = new Customer();
+            User user = new User();
             CustomerViewModel cvm = new CustomerViewModel();
             try
             {
                 
-                customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
+                customer = db.Customers.Where(_ => _.CustomerEmail == email && _.IsActive == true).FirstOrDefault();
                 if (customer != null && customer.CustomerId > 0)
                 {
                     if (customer.CustomerPassword != password)
@@ -64,7 +65,26 @@ namespace LoyaltyProgram.Controllers
                 }
                 else
                 {
-                    message = "Invalid Email ID";
+                    user = db.Users.Where(_ => _.UserEmail == email && _.IsActive == true).FirstOrDefault();
+                    if (user != null && user.UserId > 0)
+                    {
+                        if (user.UserPassword != password)
+                        {
+                            message = "Enter correct password";
+                        }
+                        else {
+                            user.isLoggedIn = true;
+                            db.Entry(user).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            // User Session
+                            Session["User"] = user;
+                        }
+                    }
+                    else {
+                        message = "Invalid Email ID";
+                    }
+                  
                 }
                 return Json(message, JsonRequestBehavior.AllowGet);
 
@@ -89,6 +109,7 @@ namespace LoyaltyProgram.Controllers
         {
             CustomerViewModel cvm = new CustomerViewModel();
             Customer c = new Customer();
+            User u = new User();
             try
             {
                 if (Session["Customer"] != null)
@@ -103,6 +124,21 @@ namespace LoyaltyProgram.Controllers
                     }
                     Session["Customer"] = null;
 
+                }
+                else {
+                    if (Session["User"] != null)
+                    {
+                        u = (User)Session["User"];
+                        if (u!=null && u.UserId >0)
+                        {
+                            u = db.Users.Where(_ => _.isLoggedIn == true && _.UserEmail == u.UserEmail).FirstOrDefault();
+                            u.isLoggedIn = false;
+                            db.Entry(u).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                        }
+                        Session["User"] = null;
+                    }
                 }
             }
             catch (Exception ex)

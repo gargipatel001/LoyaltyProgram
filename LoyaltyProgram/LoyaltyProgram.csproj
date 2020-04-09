@@ -131,10 +131,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
+    <Compile Include="Controllers\CustomerLevelController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\ForgetPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ManageCustomersController.cs" />
+    <Compile Include="Controllers\ManageFAQController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\PointRedeemHistoryController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
@@ -147,6 +150,14 @@
     <Compile Include="DAL\LoyaltyProgramContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.cs" />
+    <Compile Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.designer.cs">
+      <DependentUpon>202004040348110_Included_IsLoggedInFlagInUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040430181_Included_IsActiveFlag.cs" />
+    <Compile Include="Migrations\202004040430181_Included_IsActiveFlag.designer.cs">
+      <DependentUpon>202004040430181_Included_IsActiveFlag.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -199,7 +210,9 @@
     <Content Include="Content\Images\prod-3.jpg" />
     <Content Include="Content\Images\prod-4.jpg" />
     <Content Include="Content\Images\prod-5.jpg" />
+    <Content Include="Content\Images\PromotionPartners\apple.jpg" />
     <Content Include="Content\Images\PromotionPartners\cineplex-logo.jpg" />
+    <Content Include="Content\Images\PromotionPartners\download.png" />
     <Content Include="Content\Images\PromotionPartners\levis.jpg" />
     <Content Include="Content\Images\user1-128x128.jpg" />
     <Content Include="Content\Images\user2-160x160.jpg" />
@@ -2641,10 +2654,15 @@
     <Content Include="Views\PromotionType\EditorTemplates\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Promotion\Index.cshtml" />
     <Content Include="Views\Promotion\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Home\AdminHome.cshtml" />
+    <Content Include="Views\ManageFAQ\Index.cshtml" />
+    <Content Include="Views\ManageFAQ\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ManageCustomers\Index.cshtml" />
+    <Content Include="Views\CustomerLevel\Index.cshtml" />
+    <Content Include="Views\CustomerLevel\EditorTemplates\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -2658,6 +2676,14 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.resx">
+      <DependentUpon>202004040348110_Included_IsLoggedInFlagInUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040430181_Included_IsActiveFlag.resx">
+      <DependentUpon>202004040430181_Included_IsActiveFlag.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

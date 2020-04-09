@@ -18,7 +18,7 @@ namespace LoyaltyProgram.Controllers
             List<FAQ> faqs = new List<FAQ>();
            
             List<FAQViewModel> faqsvM = new List<FAQViewModel>();
-            faqs = db.FAQs.ToList();
+            faqs = db.FAQs.Where(_=>_.IsActive == true).ToList();
             if (faqs!=null && faqs.Count > 0)
             {
                 foreach (var item in faqs)

@@ -1,8 +1,11 @@
-﻿@model IEnumerable<LoyaltyProgram.Models.Roles>
-@{
+﻿@model LoyaltyProgram.Models.FAQ
 
+@{
+    ViewBag.Title = "FAQ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
 @section Styles
 {
     <style>
@@ -11,24 +14,22 @@
         }
     </style>
 }
-
-@(Html.Kendo().Grid<LoyaltyProgram.Models.Partner>()
-          .Name("gvPartners")
+@(Html.Kendo().Grid<LoyaltyProgram.Models.FAQ>()
+          .Name("gvFAQs")
           .Columns(columns =>
           {
               columns.Command(c => { c.Edit(); }).Width(20).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
-              columns.Bound(c => c.PartnerId).Width(30).Visible(false);
-              columns.Bound(c => c.PartnerName).Width(30).Title("Name");
-              columns.Bound(c => c.PartnerLogo).Title("Image").ClientTemplate("<img src='/Content/#=PartnerLogo#' alt='IMG' Title='IMG' height='62' width='62'/>").Width(25).HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" }).Filterable(false);
-              columns.Bound(c => c.PartnerDesc).Width(100).Title("Description");
-              columns.Bound(c => c.PartnerWebLink).Width(100).Title("Web Link");
+              columns.Bound(c => c.FAQId).Width(50).Visible(false);
+              columns.Bound(c => c.Question).Width(200).Title("Question");
+               columns.Bound(c => c.Answer).Width(300).Title("Answer");
                columns.Command(command => command.Custom("Change Status").HtmlAttributes(new { @class = "btn btn-primary", @id = "btnstyle", visible = false }).Click("UpdateStatus")).Width(30).HtmlAttributes(new { align = "center" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+
           })
           .Sortable()
           .Filterable()
           .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("HideButtons"); })
-          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Partner").Height(500).Width(430).Resizable().Name("customedit")))
-          .ToolBar(toolbar => { toolbar.Create().Text("Add New Partners"); })
+          .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("FAQ").Name("customedit").Width(450).Height(550)))
+          .ToolBar(toolbar => { toolbar.Create().Text("Add New FAQs"); })
           .Pageable(pageable => pageable
             .Refresh(true)
             .PageSizes(true)
@@ -36,17 +37,17 @@
           .DataSource(dataSource => dataSource
               .Ajax()
               .Model(model =>
-              {
-                  model.Id(m => m.PartnerId);
-              })
+                {
+                    model.Id(m => m.FAQId);
+               })
               .Events(events =>
-              {
+               {
 
-                  events.RequestEnd("onRequestEnd");
+                events.RequestEnd("onRequestEnd");
               })
-               .Create("Create", "Partner")
-               .Update(update => update.Action("Update", "Partner"))
-              .Read(read => read.Action("Read", "Partner"))
+               .Create("Create", "ManageFAQ")
+               .Update(update => update.Action("Update", "ManageFAQ"))
+              .Read(read => read.Action("Select", "ManageFAQ"))
               .PageSize(10)
           )
 )
@@ -62,12 +63,9 @@
     <span id="popupNotification"></span>
 
 </div>
-
-
-@section Scripts
-{
+@section Scripts{
     <script>
-          var wnd;
+         var wnd;
          $(document).ready(function () {
 
         wnd = $("#modalWindow").kendoWindow({
@@ -79,10 +77,10 @@
         }).data("kendoWindow");
          });
          function HideButtons(e) {
-            
+
         setKendoGridButtons(e.sender.wrapper[0].id);
 
-        var grid = $("#gvPartners").data("kendoGrid");
+        var grid = $("#gvFAQs").data("kendoGrid");
         var gridData = grid.dataSource.view();
 
         for (var i = 0; i < gridData.length; i++) {
@@ -107,8 +105,8 @@
         }
         };
          function UpdateStatus(e) {
-            
-            
+
+
         e.preventDefault();
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         wnd.center().open();
@@ -117,12 +115,12 @@
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url: '@Url.Action("UpdateStatus", "Partner")',
-                data: { Id: dataItem.PartnerId },
+                url: '@Url.Action("UpdateStatus", "ManageFAQ")',
+                data: { Id: dataItem.FAQId },
                 //async: false,
                 success: function (Data) {
 
-                    $("#gvPartners").data("kendoGrid").dataSource.read();
+                    $("#gvFAQs").data("kendoGrid").dataSource.read();
 
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -140,7 +138,7 @@
 
 
         };
-        function ShowNotification(msg, type) {
+            function ShowNotification(msg, type) {
         var popupNotification = $("#popupNotification").kendoNotification({
             autoHideAfter: 7000,
             hideOnClick: true,
@@ -160,25 +158,24 @@
             }
         }).data("kendoNotification");
         popupNotification.show(msg, type);
-        } 
-
-         function databoundEvent(e) {
+    }
+        function databoundEvent(e) {
             setKendoGridButtons(e.sender.wrapper[0].id);
         }
         function gvonCancel(e) {
             setKendoGridButtons(e.sender.wrapper[0].id);
         }
 
-        function setKendoGridButtons(gvPartners) {
+        function setKendoGridButtons(gvPromotionTypes) {
             setTimeout(function () {
-                $("#" + gvPartners + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
-                $("#" + gvPartners + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+                $("#" + gvFAQs + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvFAQs + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
 
             });
         }
         function onRequestEnd(e) {
             if (e.type == "create") {
-                $("#gvPartners").data("kendoGrid").dataSource.read();
+                $("#gvFAQs").data("kendoGrid").dataSource.read();
                 if (e.response != null && e.response.Errors == null) {
 
                   ShowNotification("Success", "success");
@@ -186,49 +183,40 @@
 
             }
         }
-
         function insertPopupCaption(e) {
 
             if (e.model.isNew()) {
-                debugger
+
                 $('.k-grid-update').text("Create");
-                $("#txtPartnerName").attr("readonly", false);
-                $("#imgPartnerLogo").hide();
+                 //$("#txtPromotionTypeName").attr("readonly", false);
                 $('.k-grid-update').on('click', function (event) {
-                    var str = $("#txtPartnerName").val()
-                    ValidateProcess(event, str, function (test) {
+                    var str = $("#txtPromotionTypeName").val()
+                    //ValidateProcess(event, str, function (test) {
 
-                        if (test == false) {
-                            event.preventDefault();
-                            event.stopPropagation();
+                    //    if (test == false) {
+                    //        event.preventDefault();
+                    //        event.stopPropagation();
 
-                        }
+                    //    }
 
-                    });
+                    //});
 
                 });
 
             }
 
             else {
-                debugger
-                e.model.dirty = true;
-                $("#txtPartnerName").attr("readonly", true);
-                var src = $("#partnerLogo").val();
-                $("#imgPartnerLogo").attr("src", "/Content/"+src);
-                $("#imgPartnerLogo").show();
-                var value = $("#PartnerDesc").val();
-                
+                //$("#txtPromotionTypeName").attr("readonly", true);
                 //$("#txtProjectID").attr("readonly", true);
                 e.container.data("kendoWindow").bind("deactivate", function () {
-                    $("#gvPartners").data("kendoGrid").dataSource.read();
+                    $("#gvFAQs").data("kendoGrid").dataSource.read();
                 })
             }
         }
-        function ValidateProcess(event, str, fn) {
+            function ValidateProcess(event, str, fn) {
         $.ajax({
             type: 'GET',
-            url: "@Url.Action("CheckPartner", "Partner")?partnerName=" + str,
+            url: "@Url.Action("CheckPromotionType", "PromotionType")?promotionType=" + str,
             dataType: 'json',
             async: false,
             success: function (data) {
@@ -238,7 +226,7 @@
                     appendTo: "#appendto"
                 }).data("kendoNotification");
 
-                staticNotification.show(kendo.toString("Partner already exists"), "error");
+                staticNotification.show(kendo.toString("Promotion Type already exists"), "error");
                 var container = $(staticNotification.options.appendTo);
                 container.scrollTop(container[0].scrollHeight);
                 fn(false);
@@ -246,5 +234,7 @@
         }
         });
     }
-    </Script>
+
+    </script>
 }
+

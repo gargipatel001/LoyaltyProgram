@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace LoyaltyProgram.Models
         public String LevelName { get; set; }
         public double? PointsRangeFrom { get; set; }
         public double? PointsRangeTo { get; set; }
+        [DefaultValue("true")]
+
+        public bool IsActive { get; set; }
         public ICollection<Customer> Customers { get; set; }
 
 

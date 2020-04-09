@@ -1,0 +1,46 @@
+﻿@model LoyaltyProgram.Models.CustomerLevel
+    @{
+        Layout = null;
+    }
+
+    <div class="card">
+        <div class="card-body">
+            @Html.HiddenFor(_ => _.LevelId)
+            <div class="row">
+                <div class="col-sm-8">
+                    <!-- text input -->
+                    <div class="form-group">
+                        <label for="roleName">Level<span style="color:red">*</span></label>
+                        @Html.Kendo().TextBoxFor(m => m.LevelName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtLevelName" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <!-- text input -->
+                    <div class="form-group">
+                        <label for="roleName">Points From<span style="color:red">*</span></label>
+                        @Html.Kendo().NumericTextBoxFor(m => m.PointsRangeFrom).Format("#").HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtPointsRangeFrom" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <!-- text input -->
+                    <div class="form-group">
+                        <label for="roleName">Points To<span style="color:red">*</span></label>
+                        @Html.Kendo().NumericTextBoxFor(m => m.PointsRangeTo).Format("#").HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtPointsRangeTo" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <!-- text input -->
+                    <div class="form-group">
+                        <div id="appendto" class="demo-section k-content"></div>
+                        <span id="staticNotification">  </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

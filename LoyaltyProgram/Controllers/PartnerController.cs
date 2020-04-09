@@ -179,5 +179,33 @@ namespace LoyaltyProgram.Controllers
             // Return an empty string to signify success
             return Content("");
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UpdateStatus(int Id)
+        {
+            try
+            {
+                Partner partner = new Partner();
+                partner = db.Partners.Where(_ => _.PartnerId == Id).FirstOrDefault();
+                if (partner != null && partner.PartnerId > 0)
+                {
+                    partner.IsActive = !partner.IsActive;
+                    db.Entry(partner).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { status = "Success", message = "Success" });
+                }
+                else
+                {
+                    return Json(new { status = "Error", message = "Error" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //ErrorLogger.LogError("UpdateStatus();", ex);
+            }
+            return RedirectToAction("Index");
+
+        }
     }
 }

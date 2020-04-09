@@ -25,12 +25,13 @@
               columns.Bound(c => c.PromotionEndDate).Width(150).Title("End Date").ClientTemplate("#= kendo.toString(PromotionEndDate, \"MM/dd/yyyy hh:mm tt\") #");
               columns.Bound(c => c.PartnerId).Visible(false).Width(150).Title("Partner");
               columns.Bound(c => c.Partner.PartnerName).Width(150).Title("Partner");
-              columns.Bound(c => c.PromotionTypeId).Visible(false).Width(150).Title("Partner");
-              columns.Bound(c => c.PromotionType.PromotionTypeName).Width(50).Title("Type");
+              columns.Bound(c => c.PromotionTypeId).Visible(false).Width(100).Title("Partner");
+              columns.Bound(c => c.PromotionType.PromotionTypeName).Width(100).Title("Type");
+               columns.Command(command => command.Custom("Change Status").HtmlAttributes(new { @class = "btn btn-primary", @id = "btnstyle", visible = false }).Click("UpdateStatus")).Width(30).HtmlAttributes(new { align = "center" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
           })
           .Sortable()
           .Filterable()
-          .Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("databoundEvent"); })
+          .Events(events => {  events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("HideButtons"); })
           .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Promotions").Name("customedit").Width(420).Height(330)))
           .ToolBar(toolbar => { toolbar.Create().Text("Add New Promotion"); })
           .Pageable(pageable => pageable
@@ -71,6 +72,7 @@
               {
 
                   events.RequestEnd("onRequestEnd");
+                  //events.DataBound("HideButtons");
               })
 
           // .Read(read=>read.Action("Select", "Promotion"))
@@ -82,7 +84,13 @@
 
 
 )
-)
+<div id="modalWindow">
+    <div style="padding-bottom:8px;"><h5>Are you sure you want to change status?</h5></div>
+    <div style="text-align:center;padding-bottom:6px;">
+        <button id="btnyes" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">Yes</button>&nbsp;&nbsp;&nbsp;
+        <button id="btnno" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">No</button>
+    </div>
+</div>
 <div class="col-sm-3">
 
     <span id="popupNotification"></span>
@@ -91,6 +99,80 @@
 
 @section Scripts{
     <script>
+         var wnd;
+         $(document).ready(function () {
+
+        wnd = $("#modalWindow").kendoWindow({
+            title: "Confirmation!",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 300
+        }).data("kendoWindow");
+         });
+        function HideButtons(e) {
+            
+        setKendoGridButtons(e.sender.wrapper[0].id);
+
+        var grid = $("#gvPromotions").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            if (gridData[i].IsActive != null) {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+
+                if (gridData[i].IsActive == true) {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Deactivate");
+                    $(currenRow).find(".k-grid-edit").show();
+
+                }
+                else {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Activate");
+                    $(currenRow).find(".k-grid-edit").hide();
+
+                }
+
+            }
+        }
+    };
+        function UpdateStatus(e) {
+            
+            
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        wnd.center().open();
+
+        $("#btnyes").unbind().click(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '@Url.Action("UpdateStatus", "Promotion")',
+                data: { Id: dataItem.PromotionId },
+                //async: false,
+                success: function (Data) {
+
+                    $("#gvPromotions").data("kendoGrid").dataSource.read();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('error');
+                }
+            })
+            wnd.close();
+        });
+
+        $("#btnno").unbind().click(function () {
+            wnd.close();
+            topPropagation();
+        });
+
+
+
+        };
+
             function ShowNotification(msg, type) {
         var popupNotification = $("#popupNotification").kendoNotification({
             autoHideAfter: 7000,
@@ -112,9 +194,9 @@
         }).data("kendoNotification");
         popupNotification.show(msg, type);
     }
-        function databoundEvent(e) {
-            setKendoGridButtons(e.sender.wrapper[0].id);
-        }
+        //function databoundEvent(e) {
+        //    setKendoGridButtons(e.sender.wrapper[0].id);
+        //}
         function gvonCancel(e) {
             setKendoGridButtons(e.sender.wrapper[0].id);
         }
@@ -139,10 +221,10 @@
         function insertPopupCaption(e) {
 
             if (e.model.isNew()) {
-               
+
                 $('.k-grid-update').text("Create");
                  $("#txtPromotionTypeName").attr("readonly", false);
-               
+
 
             }
 

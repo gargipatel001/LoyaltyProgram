@@ -6,17 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 namespace LoyaltyProgram.Controllers
 {
-    public class PromotionTypeController : Controller
+    public class ManageFAQController : Controller
     {
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
-
-        // GET: PromotionType
+        // GET: ManageFAQ
         public ActionResult Index()
         {
 
@@ -24,19 +22,19 @@ namespace LoyaltyProgram.Controllers
         }
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
-            var data = db.PromotionTypes.ToList();
+            var data = db.FAQs.ToList();
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Update([DataSourceRequest] DataSourceRequest request, PromotionType promotionType)
+        public ActionResult Update([DataSourceRequest] DataSourceRequest request, FAQ faq)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    db.Entry(promotionType).State = EntityState.Modified;
+                    db.Entry(faq).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -49,44 +47,27 @@ namespace LoyaltyProgram.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Create([DataSourceRequest] DataSourceRequest request, PromotionType promotionType)
+        public ActionResult Create([DataSourceRequest] DataSourceRequest request, FAQ faq)
         {
             if (ModelState.IsValid)
             {
-                db.PromotionTypes.Add(promotionType);
+                db.FAQs.Add(faq);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             return RedirectToAction("Index");
         }
-
-
-        public ActionResult CheckPromotionType(string promotionType)
-        {
-            try
-            {
-                int Count = db.PromotionTypes.Where(_ => _.PromotionTypeName == promotionType).Count();
-
-                return Json(Count, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(0, JsonRequestBehavior.AllowGet);
-            }
-
-        }
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateStatus(int Id)
         {
             try
             {
-                PromotionType promotionType = new PromotionType();
-                promotionType = db.PromotionTypes.Where(_ => _.PromotionTypeId == Id).FirstOrDefault();
-                if (promotionType != null && promotionType.PromotionTypeId > 0)
+                FAQ fAQ = new FAQ();
+                fAQ = db.FAQs.Where(_ => _.FAQId == Id).FirstOrDefault();
+                if (fAQ != null && fAQ.FAQId > 0)
                 {
-                    promotionType.IsActive = !promotionType.IsActive;
-                    db.Entry(promotionType).State = EntityState.Modified;
+                    fAQ.IsActive = !fAQ.IsActive;
+                    db.Entry(fAQ).State = EntityState.Modified;
                     db.SaveChanges();
                     return Json(new { status = "Success", message = "Success" });
                 }

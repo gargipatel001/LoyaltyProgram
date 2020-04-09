@@ -71,7 +71,7 @@ namespace LoyaltyProgram.Controllers
         public List<Promotion> GetAllPromotions()
         {
             List<Promotion> promotions = new List<Promotion>();
-            promotions = db.Promotions.Include(_ => _.Partner).Include(_ => _.PromotionType).ToList();
+            promotions = db.Promotions.Include(_ => _.Partner).Include(_ => _.PromotionType).Where(_=>_.IsActive == true && _.PromotionStartDate <= DateTime.Now && _.PromotionEndDate >= DateTime.Now).ToList();
             return promotions;
         }
         public ActionResult CheckPoints(int qty, int promotionpoints)
