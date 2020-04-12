@@ -1,0 +1,139 @@
+﻿@model LoyaltyProgram.ViewModels.CustomerViewModel
+@{
+    Layout = null;
+}
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            @Html.HiddenFor(_ => _.CustomerId)
+            @Html.HiddenFor(_ => _.IsActive)
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">First Name<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerFirstName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtFirstName" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Last Name<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerLastName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtLastName" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Email<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerEmail).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtCustomerEmail" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Card No<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerCardNo).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtCardNo", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Gender<span style="color:red">*</span></label>
+                    @(Html.Kendo().DropDownListFor(_ => _.CustomerGender)
+                     .Name("CustomerGender")
+                     .DataTextField("Text")
+                     .DataValueField("Value")
+                     .BindTo(new List<SelectListItem>() {
+                     new SelectListItem() {
+                     Text = "F",
+                     Value = "F"
+                     },
+                     new SelectListItem() {
+                     Text = "M",
+                     Value = "M"
+                     }
+                     })
+                     //.Value("1")
+                     .HtmlAttributes(new { @class = "form-control" })
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">DOB<span style="color:red">*</span></label>
+                    @(Html.Kendo().DatePickerFor(_ => _.CustomerDOB)
+                     .Name("CustomerDOB")
+                    .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select DOB", @id = "dpDOB" })
+                    )
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Address<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerAddress).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtAddress" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">City<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerCity).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtCity" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Province<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(m => m.CustomerProvince).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtProvince" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Postal Code<span style="color:red">*</span></label>
+                    @Html.Kendo().MaskedTextBoxFor(_ => _.CustomerPostalCode).Mask("L0L0L0").HtmlAttributes(new { placeholder = "Enter Postal Code (A1A1A1)", @id = "txtPostalCode", @class = "form-control", @required = "required", validationmessage = "Enter Postal Code" })
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Loyalty Points<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(_ => _.CustomerLoyaltyPoints).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtLoyaltyPoints", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <!-- text input -->
+                <div class="form-group">
+                    <label for="roleName">Level<span style="color:red">*</span></label>
+                    @Html.Kendo().TextBoxFor(_ => _.Level.LevelName).HtmlAttributes(new { @class = "form-control", @required = "required", @id = "txtLevelName", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -2660,6 +2660,8 @@
     <Content Include="Views\ManageCustomers\Index.cshtml" />
     <Content Include="Views\CustomerLevel\Index.cshtml" />
     <Content Include="Views\CustomerLevel\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ManageCustomers\EditorTemplates\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ManageCustomers\CustomersDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

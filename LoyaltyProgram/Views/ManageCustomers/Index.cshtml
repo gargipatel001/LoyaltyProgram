@@ -1,2 +1,238 @@
-﻿@model LoyaltyProgram.Models.Customer
+﻿@model IEnumerable<LoyaltyProgram.ViewModels.CustomerViewModel>
 
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles
+{
+    <style>
+        .k-window-titlebar .k-window-actions {
+            position: relative !important;
+        }
+    </style>
+}
+@(Html.Kendo().Grid<LoyaltyProgram.ViewModels.CustomerViewModel>()
+         .Name("gvCustomers")
+          .Columns(columns =>
+          {
+          columns.Command(c => { c.Edit(); }).Width(70).Title("Action").HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center" });
+          columns.Bound(c => c.IsActive).Visible(false);
+          columns.Bound(c => c.CustomerId).Visible(false);
+          columns.Bound(c => c.CustomerEmail).Width(190).Title("Email").HtmlAttributes(new { style="color:blue"}).Template(@<text></text>).ClientTemplate("<a href='/ManageCustomers/CustomersDetail?customerId=#= CustomerId #'>#=CustomerEmail#</a>");
+columns.Bound(c => c.CustomerFirstName).Width(100).Title("First Name");
+columns.Bound(c => c.CustomerLastName).Width(100).Title("Last Name");
+columns.Bound(c => c.CustomerGender).Title("Gender").Width(55).HtmlAttributes(new { style = "text-align:center;" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+columns.Bound(c => c.CustomerDOB).Width(100).Title("DOB").ClientTemplate("#= kendo.toString(CustomerDOB, \"MM/dd/yyyy\") #");
+columns.Bound(c => c.CustomerAddress).Width(100).Title("Address");
+columns.Bound(c => c.CustomerCity).Width(105).Title("City");
+columns.Bound(c => c.CustomerProvince).Width(75).Title("Province");
+columns.Bound(c => c.CustomerPostalCode).Width(105).Title("Postal Code").Visible(false);
+columns.Bound(c => c.CustomerPhoneNumber).Width(105).Title("Phone");
+columns.Bound(c => c.CustomerLoyaltyPoints).Width(100).Title("Loyalty Points").Visible(false);
+columns.Bound(c => c.Level.LevelName).Width(150).Title("Level").Visible(false);
+
+columns.Command(command => command.Custom("Change Status").HtmlAttributes(new { @class = "btn btn-primary", @id = "btnstyle", visible = false }).Click("UpdateStatus")).Width(90).HtmlAttributes(new { align = "center" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
+})
+.Resizable(rl => rl.Columns(true))
+.Sortable()
+.Filterable()
+.Scrollable()
+.Events(events => { events.Edit("insertPopupCaption"); events.Cancel("gvonCancel"); events.DataBound("HideButtons"); })
+.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_CreateOrUpdate").Window(w => w.Title("Partner").Height(500).Width(430).Resizable().Name("customedit")))
+//.ToolBar(toolbar => { toolbar.Create().Text("Add New Partners"); })
+.Pageable(pageable => pageable
+.Refresh(true)
+.PageSizes(true)
+.ButtonCount(5))
+.DataSource(dataSource => dataSource
+.Ajax()
+.Model(model =>
+{
+model.Id(m => m.CustomerId);
+model.Field("CustomerDOB", typeof(DateTime));
+model.Field("LevelName", typeof(String));
+model.Field(_ => _.Level).DefaultValue(new LoyaltyProgram.ViewModels.CustomerLevelViewModel() { });
+})
+.Events(events =>
+{
+
+events.RequestEnd("onRequestEnd");
+})
+
+.Update(update => update.Action("Update", "ManageCustomers"))
+.Read(read => read.Action("Select", "ManageCustomers"))
+.PageSize(10)
+)
+)
+
+<div id="modalWindow">
+    <div style="padding-bottom:8px;"><h5>Are you sure you want to change status?</h5></div>
+    <div style="text-align:center;padding-bottom:6px;">
+        <button id="btnyes" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">Yes</button>&nbsp;&nbsp;&nbsp;
+        <button id="btnno" class="btn btn-primary" style="width:30px;height:16px;font-size:inherit;">No</button>
+    </div>
+</div>
+<div class="col-sm-3">
+
+    <span id="popupNotification"></span>
+
+</div>
+
+@section Scripts{
+    <script>
+         var wnd;
+         $(document).ready(function () {
+
+        wnd = $("#modalWindow").kendoWindow({
+            title: "Confirmation!",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 300
+        }).data("kendoWindow");
+         });
+        function HideButtons(e) {
+            
+        setKendoGridButtons(e.sender.wrapper[0].id);
+
+        var grid = $("#gvCustomers").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            if (gridData[i].IsActive != null) {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+
+                if (gridData[i].IsActive == true) {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Deactivate");
+                    $(currenRow).find(".k-grid-edit").show();
+
+                }
+                else {
+
+                    $(currenRow).find(".k-grid-ChangeStatus").text("Activate");
+                    $(currenRow).find(".k-grid-edit").hide();
+
+                }
+
+            }
+        }
+    };
+       function UpdateStatus(e) {
+
+
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        wnd.center().open();
+
+        $("#btnyes").unbind().click(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '@Url.Action("UpdateStatus", "ManageCustomers")',
+                data: { Id: dataItem.CustomerId },
+                //async: false,
+                success: function (Data) {
+
+
+                    $("#gvCustomers").data("kendoGrid").dataSource.read();
+                    $('#gvCustomers').data('kendoGrid').refresh();
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('error');
+                }
+            })
+            wnd.close();
+        });
+
+        $("#btnno").unbind().click(function () {
+            wnd.close();
+            topPropagation();
+        });
+
+
+
+        };
+
+            function ShowNotification(msg, type) {
+        var popupNotification = $("#popupNotification").kendoNotification({
+            autoHideAfter: 7000,
+            hideOnClick: true,
+            animation: {
+                open: {
+                    effects: "slideIn:left"
+                },
+                close: {
+                    effects: "slideIn:left",
+                    reverse: true
+                }
+            },
+            position: {
+                pinned: true,
+                bottom: 60,
+                right: 40
+            }
+        }).data("kendoNotification");
+        popupNotification.show(msg, type);
+    }
+        //function databoundEvent(e) {
+        //    setKendoGridButtons(e.sender.wrapper[0].id);
+        //}
+        function gvonCancel(e) {
+            setKendoGridButtons(e.sender.wrapper[0].id);
+        }
+
+        function setKendoGridButtons(gvCustomers) {
+            setTimeout(function () {
+                $("#" + gvCustomers + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvCustomers + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+
+            });
+        }
+        function onRequestEnd(e) {
+            if (e.type == "create") {
+                $("#gvCustomers").data("kendoGrid").dataSource.read();
+                if (e.response != null && e.response.Errors == null) {
+
+                  ShowNotification("Success", "success");
+                }
+
+            }
+        }
+        function insertPopupCaption(e) {
+
+            if (e.model.isNew()) {
+
+                //$('.k-grid-update').text("Create");
+                // $("#txtPromotionTypeName").attr("readonly", false);
+
+
+            }
+
+            else {
+
+                //var partnersdropdownlist = $("#ddlpromotionPartners").data("kendoDropDownList");
+                //partnersdropdownlist.value(e.model.PartnerId);
+                //partnersdropdownlist.enable(false);
+
+                //var promotionTypedropdownlist = $("#ddlpromotionType").data("kendoDropDownList");
+                //promotionTypedropdownlist.value(e.model.PromotionTypeId);
+                //promotionTypedropdownlist.enable(false);
+
+                //var numerictextbox = $("#PromotionPoints").data("kendoNumericTextBox");
+                //numerictextbox.value(e.model.PromotionPoints);
+
+                //$("#txtPromotionTypeName").attr("readonly", true);
+                ////$("#txtProjectID").attr("readonly", true);
+                e.container.data("kendoWindow").bind("deactivate", function () {
+                    $("#gvCustomers").data("kendoGrid").dataSource.read();
+                })
+            }
+        }
+
+
+    </script>
+}

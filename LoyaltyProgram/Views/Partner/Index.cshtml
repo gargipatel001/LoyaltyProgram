@@ -190,7 +190,7 @@
         function insertPopupCaption(e) {
 
             if (e.model.isNew()) {
-                debugger
+                
                 $('.k-grid-update').text("Create");
                 $("#txtPartnerName").attr("readonly", false);
                 $("#imgPartnerLogo").hide();
@@ -211,7 +211,7 @@
             }
 
             else {
-                debugger
+                
                 e.model.dirty = true;
                 $("#txtPartnerName").attr("readonly", true);
                 var src = $("#partnerLogo").val();
