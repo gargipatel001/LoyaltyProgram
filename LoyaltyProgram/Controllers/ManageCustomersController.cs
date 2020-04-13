@@ -16,11 +16,13 @@ namespace LoyaltyProgram.Controllers
     {
         // GET: ManageCustomers
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
-        //CustomerViewModel cvm = new CustomerViewModel();
+
         public ActionResult Index()
         {
             return View();
         }
+
+        // Bind Customer's Grid
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             List<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
@@ -53,56 +55,59 @@ namespace LoyaltyProgram.Controllers
                     cvm.Level.LevelName = customer.Level.LevelName;
                     customerViewModel.Add(cvm);
                 }
-               
-                
+
+
             }
             //var data = db.Promotions.Include(_ => _.PromotionType).Include(_ => _.Partner).ToList();
-           
+
             return Json(customerViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
         [AcceptVerbs(HttpVerbs.Post)]
+
+        // Update Customer
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, CustomerViewModel customer)
         {
-          
-                try
+
+            try
+            {
+                if (customer != null && customer.CustomerId > 0)
                 {
-                    if (customer!=null && customer.CustomerId > 0)
-                    {
-                        Customer customerModel = new Customer();
-                        customerModel = db.Customers.Where(_ => _.CustomerId == customer.CustomerId).FirstOrDefault();
-                        customerModel.CustomerFirstName = customer.CustomerFirstName;
-                        customerModel.CustomerLastName = customer.CustomerLastName;
-                        customerModel.CustomerEmail = customer.CustomerEmail;
-                        customerModel.CustomerDOB = customer.CustomerDOB;
-                        customerModel.CustomerGender = customer.CustomerGender;
-                        customerModel.CustomerAddress = customer.CustomerAddress;
-                        customerModel.CustomerCity = customer.CustomerCity;
-                        customerModel.CustomerProvince = customer.CustomerProvince;
-                        customerModel.CustomerPhoneNumber = customer.CustomerPhoneNumber;
-                        customerModel.CustomerPostalCode = customer.CustomerPostalCode;
-                        db.Entry(customerModel).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                   
-
-
-                }
-                catch (Exception ex)
-                {
-
+                    Customer customerModel = new Customer();
+                    customerModel = db.Customers.Where(_ => _.CustomerId == customer.CustomerId).FirstOrDefault();
+                    customerModel.CustomerFirstName = customer.CustomerFirstName;
+                    customerModel.CustomerLastName = customer.CustomerLastName;
+                    customerModel.CustomerEmail = customer.CustomerEmail;
+                    customerModel.CustomerDOB = customer.CustomerDOB;
+                    customerModel.CustomerGender = customer.CustomerGender;
+                    customerModel.CustomerAddress = customer.CustomerAddress;
+                    customerModel.CustomerCity = customer.CustomerCity;
+                    customerModel.CustomerProvince = customer.CustomerProvince;
+                    customerModel.CustomerPhoneNumber = customer.CustomerPhoneNumber;
+                    customerModel.CustomerPostalCode = customer.CustomerPostalCode;
+                    db.Entry(customerModel).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
 
-           
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
 
             return RedirectToAction("Index");
         }
 
+        // Update Customer Status
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateStatus(int Id)
         {
             try
             {
-               Customer customer = new Customer();
+                Customer customer = new Customer();
                 customer = db.Customers.Where(_ => _.CustomerId == Id).FirstOrDefault();
                 if (customer != null && customer.CustomerId > 0)
                 {
@@ -125,11 +130,13 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
 
         }
+
+        // Customer Detail by customerId
         public ActionResult CustomersDetail(int customerId)
         {
             CustomerViewModel cvm = new CustomerViewModel();
             Customer customer = new Customer();
-            customer = db.Customers.Where(_ => _.CustomerId == customerId).Include(_=>_.Level).FirstOrDefault();
+            customer = db.Customers.Where(_ => _.CustomerId == customerId).Include(_ => _.Level).FirstOrDefault();
             if (customer != null && customer.CustomerId > 0)
             {
                 cvm.CustomerId = customer.CustomerId;
@@ -152,9 +159,9 @@ namespace LoyaltyProgram.Controllers
                 cvm.IsActive = customer.IsActive;
                 cvm.Level = new CustomerLevelViewModel();
                 cvm.Level.LevelName = customer.Level.LevelName;
-                
+
             }
-            return View("CustomersDetail",cvm);
+            return View("CustomersDetail", cvm);
         }
     }
 }

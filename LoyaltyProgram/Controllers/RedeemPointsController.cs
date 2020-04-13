@@ -20,7 +20,7 @@ namespace LoyaltyProgram.Controllers
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
         public ActionResult Index()
         {
-
+            // Get All Promotions to redeem
             List<Promotion> promotions = new List<Promotion>();
             List<PromotionViewModel> promotionsViewModel = new List<PromotionViewModel>();
             try
@@ -68,79 +68,14 @@ namespace LoyaltyProgram.Controllers
 
             return View(promotionsViewModel);
         }
+        // Get All promotions
         public List<Promotion> GetAllPromotions()
         {
             List<Promotion> promotions = new List<Promotion>();
-            promotions = db.Promotions.Include(_ => _.Partner).Include(_ => _.PromotionType).Where(_=>_.IsActive == true && _.PromotionStartDate <= DateTime.Now && _.PromotionEndDate >= DateTime.Now).ToList();
+            promotions = db.Promotions.Include(_ => _.Partner).Include(_ => _.PromotionType).Where(_ => _.IsActive == true && _.PromotionStartDate <= DateTime.Now && _.PromotionEndDate >= DateTime.Now).ToList();
             return promotions;
         }
-        public ActionResult CheckPoints(int qty, int promotionpoints)
-        {
-            string message = "";
-            if (Session["Customer"] != null)
-            {
-                CustomerViewModel cvm = new CustomerViewModel();
-                cvm = (CustomerViewModel)Session["Customer"];
-                int purchasetotal = qty * promotionpoints;
-                if (purchasetotal > cvm.CustomerLoyaltyPoints)
-                {
-                    message = "You donot have sufficient points. Please change the quantity";
-                }
-            }
-            return Json(message, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult getData(int promotionPoints)
-        {
-            try
-            {
-                double customerPoints = 0;
-                int possibleQunatity = 0;
-                List<int> quantities = new List<int>();
-
-                if (Session["Customer"] != null)
-                {
-                    CustomerViewModel cvm = new CustomerViewModel();
-                    cvm = (CustomerViewModel)Session["Customer"];
-                    customerPoints = cvm.CustomerLoyaltyPoints;
-                    if (customerPoints > promotionPoints)
-                    {
-                        possibleQunatity = (int)customerPoints / promotionPoints;
-                        if (possibleQunatity == 1)
-                        {
-                            quantities.Append(1).ToList();
-                        }
-                        else
-                        {
-                            quantities = Enumerable.Range(1, possibleQunatity).ToList();
-                        }
-                    }
-
-
-                }
-                if (quantities != null && quantities.Count > 0)
-                {
-                    var stringlist = quantities.Select(x => new SelectListItem
-                    {
-                        Value = x.ToString(),
-                        Text = x.ToString()
-                    }).ToList();
-                    return Json(stringlist, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("", JsonRequestBehavior.AllowGet);
-
-                }
-
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-            }
-        }
+        // Redeem Points by Promotion
         public ActionResult RedeemPoints(int promotionId)
         {
             Promotion p = new Promotion();
@@ -181,7 +116,7 @@ namespace LoyaltyProgram.Controllers
                         sendConfirmationMail(cvm.CustomerEmail, p.PromotionName);
                     }
 
-                 
+
                 }
             }
             catch (Exception ex)
@@ -192,7 +127,7 @@ namespace LoyaltyProgram.Controllers
 
             return RedirectToAction("Index", "PointRedeemHistory");
         }
-
+        // Cofirmation mail to customer after successful redeemption
         public void sendConfirmationMail(string cMail, string promotion)
         {
             try
@@ -262,6 +197,7 @@ namespace LoyaltyProgram.Controllers
             }
 
         }
+        // Generating coupon code for promotion purchase
         public string generateCouponCode()
         {
             //string couponCode = "";
@@ -270,20 +206,20 @@ namespace LoyaltyProgram.Controllers
             char[] chars = new char[allowedLength];
             try
             {
-                
+
                 Random randNum = new Random();
-               
+
                 int allowedCharCount = _allowedChars.Length;
                 for (int i = 0; i < allowedLength; i++)
                 {
                     chars[i] = _allowedChars[(int)((_allowedChars.Length) * randNum.NextDouble())];
                 }
-               
+
             }
             catch (Exception)
             {
 
-               // throw;
+                // throw;
             }
             return new string(chars);
         }

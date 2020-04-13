@@ -19,13 +19,14 @@ namespace LoyaltyProgram.Controllers
         {
             return View();
         }
+        // Bind CustomerLevel Grid
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             var data = db.CustomerLevels.ToList();
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-
+        // Customer LeveL Update
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, CustomerLevel customerLevel)
         {
@@ -44,7 +45,7 @@ namespace LoyaltyProgram.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        // CustomerLevel Create
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, CustomerLevel customerLevel)
         {
@@ -58,7 +59,7 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //Check for existing customerlevels
         public ActionResult CheckCustomerLevels(string customerLevel)
         {
             try

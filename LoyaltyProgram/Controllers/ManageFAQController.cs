@@ -20,12 +20,15 @@ namespace LoyaltyProgram.Controllers
 
             return View();
         }
+
+        // Bind FAQ Grid
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             var data = db.FAQs.ToList();
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
+        // Update FAQ
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, FAQ faq)
@@ -46,6 +49,7 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
         }
 
+        // Create FAQ
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, FAQ faq)
         {
@@ -58,6 +62,8 @@ namespace LoyaltyProgram.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // Update FAQ status
         public ActionResult UpdateStatus(int Id)
         {
             try

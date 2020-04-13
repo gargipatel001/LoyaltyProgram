@@ -18,14 +18,15 @@ namespace LoyaltyProgram.Controllers
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
         public ActionResult Index()
         {
-            
+
             return View();
         }
+        //Bind PromotionPartner dropdown
         public JsonResult BindPromotionPartners()
         {
 
             List<Partner> promotionPartners = new List<Partner>();
-            promotionPartners = db.Partners.Where(_=>_.IsActive == true).ToList();
+            promotionPartners = db.Partners.Where(_ => _.IsActive == true).ToList();
             List<PartnerViewModel> partnersViewModel = new List<PartnerViewModel>();
             foreach (var item in promotionPartners)
             {
@@ -36,6 +37,7 @@ namespace LoyaltyProgram.Controllers
             }
             return Json(partnersViewModel, JsonRequestBehavior.AllowGet);
         }
+        //Bind PromotionType dropdown
         public JsonResult BindPromotionTypes()
         {
             List<PromotionType> promotionTypes = new List<PromotionType>();
@@ -50,28 +52,16 @@ namespace LoyaltyProgram.Controllers
             }
             return Json(promotionTypesViewModel, JsonRequestBehavior.AllowGet);
         }
+
+        //Get All Promotions
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             List<PromotionViewModel> promotionViewModel = new List<PromotionViewModel>();
-            var data = db.Promotions.Include(_=>_.PromotionType).Include(_=>_.Partner).ToList();
-            //foreach (var item in data)
-            //{
-            //    PromotionViewModel pvm = new PromotionViewModel();
-            //    pvm.PromotionId = item.PromotionId;
-            //    pvm.PromotionName = item.PromotionName;
-            //    pvm.PromotionTitle = item.PromotionTitle;
-            //    pvm.PromotionPoints = item.PromotionPoints;
-            //    pvm.PromotionDesc = item.PromotionDesc;
-            //    pvm.PromotionStartDate = item.PromotionStartDate;
-            //    pvm.PromotionEndDate = item.PromotionEndDate;
-            //    pvm.PartnerId = item.PartnerId;
-            //    pvm.PartnerName = item.Partner.PartnerName;
-            //    pvm.PromotionTypeId = item.PromotionTypeId;
-            //    pvm.promotionType = item.PromotionType.PromotionTypeName;
-            //    promotionViewModel.Add(pvm);
-            //}
+            var data = db.Promotions.Include(_ => _.PromotionType).Include(_ => _.Partner).ToList();
+
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+        // Update Promotions
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, Promotion promotion)
         {
@@ -79,29 +69,21 @@ namespace LoyaltyProgram.Controllers
             {
                 try
                 {
-                    //Promotion promotion = new Promotion();
-                    //promotion.PromotionName = promotionviewModel.PromotionName;
-                    //promotion.PromotionTitle = promotionviewModel.PromotionTitle;
-                    //promotion.PromotionDesc = promotionviewModel.PromotionDesc;
-                    //promotion.PromotionStartDate = promotionviewModel.PromotionStartDate;
-                    //promotion.PromotionEndDate = promotionviewModel.PromotionEndDate;
-                    //promotion.PartnerId = promotionviewModel.PartnerId;
-                    //promotion.PromotionTypeId = promotionviewModel.PromotionTypeId;
-
-
                     db.Entry(promotion).State = EntityState.Modified;
                     db.SaveChanges();
-                    
+
                 }
                 catch (Exception ex)
                 {
 
                 }
-               
+
             }
-           
+
             return RedirectToAction("Index");
         }
+
+        // Create Promotions
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, Promotion promotion)
@@ -110,15 +92,6 @@ namespace LoyaltyProgram.Controllers
             {
                 promotion.Partner = null;
                 promotion.PromotionType = null;
-                //Promotion promotion = new Promotion();
-                //promotion.PromotionName = promotionviewModel.PromotionName;
-                //promotion.PromotionTitle = promotionviewModel.PromotionTitle;
-                //promotion.PromotionDesc = promotionviewModel.PromotionDesc;
-                //promotion.PromotionStartDate = promotionviewModel.PromotionStartDate;
-                //promotion.PromotionEndDate = promotionviewModel.PromotionEndDate;
-                //promotion.PartnerId = promotionviewModel.PartnerId;
-                //promotion.PromotionTypeId = promotionviewModel.PromotionTypeId;
-
                 db.Promotions.Add(promotion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -126,6 +99,7 @@ namespace LoyaltyProgram.Controllers
 
             return RedirectToAction("Index");
         }
+        // Update Promotion Status
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateStatus(int Id)
         {
@@ -140,10 +114,11 @@ namespace LoyaltyProgram.Controllers
                     db.SaveChanges();
                     return Json(new { status = "Success", message = "Success" });
                 }
-                else {
+                else
+                {
                     return Json(new { status = "Error", message = "Error" });
                 }
-              
+
 
             }
             catch (Exception ex)

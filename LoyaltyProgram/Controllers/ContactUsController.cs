@@ -114,7 +114,7 @@ namespace LoyaltyProgram.Controllers
 
                 //Repalce [newusername] = signup user name   
                 MailText = MailText.Replace("[FirstName]", contactusViewModel.CustomerFirstName).Replace("[LastName]", contactusViewModel.CustomerLastName)
-                .Replace("[username]", contactusViewModel.CustomerEmail).Replace("[cardNo]", contactusViewModel.CustomerCardNo).Replace("[comment]",contactusViewModel.Comment);
+                .Replace("[username]", contactusViewModel.CustomerEmail).Replace("[cardNo]", contactusViewModel.CustomerCardNo).Replace("[comment]", contactusViewModel.Comment);
 
 
 

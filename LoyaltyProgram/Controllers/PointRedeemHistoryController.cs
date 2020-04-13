@@ -19,6 +19,7 @@ namespace LoyaltyProgram.Controllers
         {
             return View();
         }
+        // Get PointRedeemtionHistory by customer's ID
         public ActionResult bindPromotionRedeemHistory([DataSourceRequest]DataSourceRequest request)
         {
             try

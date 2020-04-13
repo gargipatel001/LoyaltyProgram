@@ -21,12 +21,13 @@ namespace LoyaltyProgram.Controllers
         {
             return View();
         }
+        // Create Customer
         [HttpPost]
         public ActionResult CreateCustomer(CustomerViewModel customerViewModel)
         {
             try
             {
-                if (customerViewModel!=null)
+                if (customerViewModel != null)
                 {
                     Customer customer = new Customer();
                     customer.CustomerFirstName = customerViewModel.CustomerFirstName;
@@ -46,8 +47,8 @@ namespace LoyaltyProgram.Controllers
                     customer.CustomerLoyaltyPoints = 10000;
                     customer.LevelId = getCustomerLevelId(customerViewModel.CustomerLoyaltyPoints);
                     customer.IsActive = true;
-                   db.Customers.Add(customer);
-                   db.SaveChanges();
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
                     sendMail(customerViewModel.CustomerEmail);
                     return RedirectToAction("Index", "Login");
 
@@ -57,10 +58,12 @@ namespace LoyaltyProgram.Controllers
             catch (Exception ex)
             {
 
-               
+
             }
             return View("Index");
         }
+
+        // Get RoleId For Customer Role
         public int getRoleIdForCustomerRole()
         {
             Roles role = new Roles();
@@ -74,10 +77,11 @@ namespace LoyaltyProgram.Controllers
                 return 0;
                 //ex.StackTrace.ToString();
             }
-          
-      
-             
+
+
+
         }
+        // Get Customer Level  by Points
         public int getCustomerLevelId(double points)
         {
             int levelId = 0;
@@ -100,9 +104,10 @@ namespace LoyaltyProgram.Controllers
 
                 return levelId;
             }
-           
+
 
         }
+        // Send Mail on successful Sign Up
         public void sendMail(String username)
         {
             try
@@ -164,15 +169,17 @@ namespace LoyaltyProgram.Controllers
             catch (Exception ex)
             {
 
-                
+
             }
         }
+
+        // Check for customer email id
         public ActionResult checkMail(string email)
         {
             string message = "";
             try
             {
-               
+
                 Customer customer = new Customer();
                 customer = db.Customers.Where(_ => _.CustomerEmail == email).FirstOrDefault();
                 if (customer != null && customer.CustomerId > 0)
@@ -186,7 +193,7 @@ namespace LoyaltyProgram.Controllers
 
                 //return message;
             }
-           
+
             return Json(message, JsonRequestBehavior.AllowGet);
         }
     }

@@ -21,13 +21,14 @@ namespace LoyaltyProgram.Controllers
         {
             return View();
         }
+        // Bind Partner Grid
         public ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
-          
+
             try
             {
-                
-               var data = db.Partners.ToList();
+
+                var data = db.Partners.ToList();
                 return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
@@ -35,21 +36,23 @@ namespace LoyaltyProgram.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
                 //throw;
             }
-           
-           
+
+
         }
+
+        // Create new Partner
         [AcceptVerbs(HttpVerbs.Post)]
+
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, Partner partner)
         {
             if (ModelState.IsValid)
             {
-                if (TempData["File"]!=null)
+                if (TempData["File"] != null)
                 {
                     string fileName = "";
-                    //var img = Convert.ToBase64String((byte[])TempData["File"]);
-                    //Byte[] file = (byte[])TempData["File"]);
-                     HttpPostedFileWrapper file = TempData["File"] as HttpPostedFileWrapper;
-                    if (file!=null)
+                    //Save Partner's Logo
+                    HttpPostedFileWrapper file = TempData["File"] as HttpPostedFileWrapper;
+                    if (file != null)
                     {
                         string path = Server.MapPath("~/Content/Images/PromotionPartners/");
                         if (!Directory.Exists(path))
@@ -62,7 +65,7 @@ namespace LoyaltyProgram.Controllers
                     partner.PartnerLogo = "Images/PromotionPartners/" + fileName;
 
                 }
-               
+
                 db.Partners.Add(partner);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -70,6 +73,8 @@ namespace LoyaltyProgram.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // Update Partner
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, Partner partner)
         {
@@ -77,12 +82,12 @@ namespace LoyaltyProgram.Controllers
             {
                 try
                 {
-                    if (TempData["File"]!=null)
+                    if (TempData["File"] != null)
                     {
                         string fileName = "";
                         string fullPath = Request.MapPath("~/Content/" + partner.PartnerLogo);
-                       
-                        
+
+
                         //var img = Convert.ToBase64String((byte[])TempData["File"]);
                         //Byte[] file = (byte[])TempData["File"]);
                         HttpPostedFileWrapper file = TempData["File"] as HttpPostedFileWrapper;
@@ -116,6 +121,8 @@ namespace LoyaltyProgram.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // Check for existing partner by partner name
         public ActionResult CheckPartner(string partnerName)
         {
             try
@@ -130,6 +137,8 @@ namespace LoyaltyProgram.Controllers
             }
 
         }
+
+        // Save  Image to tempdata
         public ActionResult Save(IEnumerable<HttpPostedFileBase> files)
         {
             // The Name of the Upload component is "files"
@@ -138,47 +147,32 @@ namespace LoyaltyProgram.Controllers
                 foreach (var file in files)
                 {
                     TempData["File"] = file;
-                    // Some browsers send file names with full path.
-                    // We are only interested in the file name.
-                   // var fileName = Path.GetFileName(file.FileName);
-                    //var physicalPath = Path.Combine(Server.MapPath("~/App_Data"), fileName);
 
-                    // The files are not actually saved in this demo
-                    // file.SaveAs(physicalPath);
                 }
             }
 
             // Return an empty string to signify success
             return Content("");
         }
+        // Remove image from tempdata
         public ActionResult Remove(string[] fileNames)
         {
             // The parameter of the Remove action must be called "fileNames"
 
             if (fileNames != null)
             {
-                if (TempData["File"]!=null)
+                if (TempData["File"] != null)
                 {
                     TempData["File"] = null;
                 }
-                //foreach (var fullName in fileNames)
-                //{
-                //    var fileName = Path.GetFileName(fullName);
-                //    var physicalPath = Path.Combine(Server.MapPath("~/App_Data"), fileName);
 
-                //    // TODO: Verify user permissions
-
-                //    if (System.IO.File.Exists(physicalPath))
-                //    {
-                //        // The files are not actually removed in this demo
-                //        // System.IO.File.Delete(physicalPath);
-                //    }
-                //}
             }
 
             // Return an empty string to signify success
             return Content("");
         }
+
+        //Update Partner's Status
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateStatus(int Id)
         {

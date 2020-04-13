@@ -54,7 +54,7 @@
                     <label for="roleName">Promotion End Date<span style="color:red">*</span></label>
                     @(Html.Kendo().DatePickerFor(_ => _.PromotionEndDate)
                                        .Name("PromotionEndDate")
-                                       .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select DOB" })
+                                       .HtmlAttributes(new { @class = "form-control", required = "required", validationmessage = "Select Promotion End Date" })
                                        .Min(DateTime.Now.ToShortDateString())
                     )
                 </div>

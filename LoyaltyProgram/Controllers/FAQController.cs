@@ -13,13 +13,16 @@ namespace LoyaltyProgram.Controllers
     {
         // GET: FAQ
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
+
         public ActionResult Index()
         {
             List<FAQ> faqs = new List<FAQ>();
-           
+
             List<FAQViewModel> faqsvM = new List<FAQViewModel>();
-            faqs = db.FAQs.Where(_=>_.IsActive == true).ToList();
-            if (faqs!=null && faqs.Count > 0)
+
+            //Get all FAQs
+            faqs = db.FAQs.Where(_ => _.IsActive == true).ToList();
+            if (faqs != null && faqs.Count > 0)
             {
                 foreach (var item in faqs)
                 {
@@ -28,7 +31,7 @@ namespace LoyaltyProgram.Controllers
                     faqvM.Question = item.Question;
                     faqvM.Answer = item.Answer;
                     faqsvM.Add(faqvM);
-                  
+
                 }
 
             }

@@ -29,7 +29,7 @@
 
 
 
-            //}); 
+            //});
             //  context.Roles.AddOrUpdate(_ => _.RoleId, new Roles()
             //  {
             //      RoleId = 1,
@@ -50,7 +50,7 @@
             //    RoleName = "Customer",
             //    RoleDescription = "Customer Role",
             //    IsActive = true
-            //}) ;
+            //});
             //   context.CustomerLevels.AddOrUpdate(_ => _.LevelId, new CustomerLevel()
             //   {
             //       LevelId = 1,
@@ -83,32 +83,33 @@
             //    LevelId = 4,
             //    LevelName = "Platinum",
             //    PointsRangeFrom = 25001,
-            //    IsActive = true
+            //    PointsRangeTo = 35000,
+         //    IsActive = true 
 
 
-            //});
+         //});
 
             //------ Sample data For Partner Table-------
-            //  context.Partners.AddOrUpdate(_ => _.PartnerId, new Partner()
-            //  {
-            //      PartnerId = 1,
-            //      PartnerName = "Levis",
-            //      PartnerLogo = "Images/PromotionPartners/levis.jpg",
-            //      PartnerDesc = "Levis Outfit",
-            //      PartnerWebLink = "https://www.levi.com/CA/en_CA/",
-            //      IsActive = true
+          //  context.Partners.AddOrUpdate(_ => _.PartnerId, new Partner()
+          //  {
+          //      PartnerId = 1,
+          //      PartnerName = "Levis",
+          //      PartnerLogo = "Images/PromotionPartners/levis.jpg",
+          //      PartnerDesc = "Levis Outfit",
+          //      PartnerWebLink = "https://www.levi.com/CA/en_CA/",
+          //      IsActive = true
 
-            //  }
-            //, new Partner()
-            //{
-            //    PartnerId = 2,
-            //    PartnerName = "Cineplex",
-            //    PartnerLogo = "Images/PromotionPartners/cineplex-logo.jpg",
-            //    PartnerDesc = "Cineplex Movie",
-            //    PartnerWebLink = "https://www.cineplex.com/",
-            //    IsActive = true
+          //  }
+          //, new Partner()
+          //{
+          //    PartnerId = 2,
+          //    PartnerName = "Cineplex",
+          //    PartnerLogo = "Images/PromotionPartners/cineplex-logo.jpg",
+          //    PartnerDesc = "Cineplex Movie",
+          //    PartnerWebLink = "https://www.cineplex.com/",
+          //    IsActive = true
 
-            //});
+          //});
 
             //------ Sample data For PromotionType Table-------
             //context.PromotionTypes.AddOrUpdate(_ => _.PromotionTypeId, new PromotionType()
@@ -129,6 +130,8 @@
             //    PartnerId = 1,
             //    PromotionTypeId = 1,
             //    PromotionPoints = 1000,
+            //    PromotionStartDate = DateTime.Now,
+            //    PromotionEndDate = DateTime.Now.AddDays(7),
             //    IsActive = true
             //},
             //    new Promotion()
@@ -140,6 +143,8 @@
             //        PartnerId = 2,
             //        PromotionTypeId = 1,
             //        PromotionPoints = 15000,
+            //        PromotionStartDate = DateTime.Now,
+            //        PromotionEndDate = DateTime.Now.AddDays(7),
             //        IsActive = true
 
             //    });

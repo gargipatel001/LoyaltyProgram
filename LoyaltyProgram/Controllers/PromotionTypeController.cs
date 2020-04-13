@@ -22,12 +22,13 @@ namespace LoyaltyProgram.Controllers
 
             return View();
         }
+        // Get All Promotion Types
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             var data = db.PromotionTypes.ToList();
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
-
+        // Update Promotion Type
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, PromotionType promotionType)
@@ -48,6 +49,8 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
         }
 
+        // Create New Promotion
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, PromotionType promotionType)
         {
@@ -61,7 +64,7 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
         }
 
-
+        // Check Existing PromotionType
         public ActionResult CheckPromotionType(string promotionType)
         {
             try
@@ -76,6 +79,8 @@ namespace LoyaltyProgram.Controllers
             }
 
         }
+
+        // Update PromotionType Status
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateStatus(int Id)
         {

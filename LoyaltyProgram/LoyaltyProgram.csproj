@@ -151,14 +151,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.cs" />
-    <Compile Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.designer.cs">
-      <DependentUpon>202004040348110_Included_IsLoggedInFlagInUserTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004040430181_Included_IsActiveFlag.cs" />
-    <Compile Include="Migrations\202004040430181_Included_IsActiveFlag.designer.cs">
-      <DependentUpon>202004040430181_Included_IsActiveFlag.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerLevel.cs" />
@@ -2678,14 +2670,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004040348110_Included_IsLoggedInFlagInUserTable.resx">
-      <DependentUpon>202004040348110_Included_IsLoggedInFlagInUserTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004040430181_Included_IsActiveFlag.resx">
-      <DependentUpon>202004040430181_Included_IsActiveFlag.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

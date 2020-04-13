@@ -20,18 +20,17 @@ namespace LoyaltyProgram.Controllers
         // GET: Roles
         public ActionResult Index()
         {
-           
+
             return View();
         }
+
+        // Get All Roles
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)
         {
             var data = db.Roles.ToList();
             return Json(data.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
-    
-       
-
-        
+        // Edit Roles
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -45,8 +44,8 @@ namespace LoyaltyProgram.Controllers
             }
             return View(roles);
         }
+        // Update Roles
 
-        
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Update([DataSourceRequest] DataSourceRequest request, Roles roles)
         {
@@ -60,12 +59,12 @@ namespace LoyaltyProgram.Controllers
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             }
             return RedirectToAction("Index");
         }
-       
+        // Create New Role
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Create([DataSourceRequest] DataSourceRequest request, Roles roles)
         {
@@ -79,13 +78,13 @@ namespace LoyaltyProgram.Controllers
             return RedirectToAction("Index");
         }
 
-       
+
         public ActionResult CheckRole(string roleName)
         {
             try
             {
                 int Count = db.Roles.Where(_ => _.RoleName == roleName).Count();
-                  
+
                 return Json(Count, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

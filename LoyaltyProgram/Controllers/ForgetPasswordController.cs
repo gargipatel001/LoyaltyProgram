@@ -25,6 +25,7 @@ namespace LoyaltyProgram.Controllers
             //TempData["Success"] = "";
             return View();
         }
+        // ForgetPassword
         public ActionResult ForgetPassword(LoginViewModel loginViewModel)
         {
             String message = "";
@@ -57,7 +58,7 @@ namespace LoyaltyProgram.Controllers
           
             return RedirectToAction("Index");
         }
-
+        // Email to customer on new password
         private void sendMail(string email)
         {
             try
@@ -123,6 +124,7 @@ namespace LoyaltyProgram.Controllers
             }
         }
 
+        // Check existing customer by mailid
         public ActionResult checkMail(string email)
         {
             string message = "";

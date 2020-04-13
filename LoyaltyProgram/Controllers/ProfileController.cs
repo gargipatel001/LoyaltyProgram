@@ -14,7 +14,8 @@ namespace LoyaltyProgram.Controllers
     public class ProfileController : Controller
     {
         CustomerViewModel cvm = new CustomerViewModel();
-        private LoyaltyProgramContext db = new LoyaltyProgramContext();
+        private LoyaltyProgramContext db = new LoyaltyProgramContext(); 
+        //Get Customer's detail
         public ActionResult Index()
         {
             if (Session["Customer"] != null)
@@ -28,7 +29,9 @@ namespace LoyaltyProgram.Controllers
             }
 
           
-        }
+        } 
+
+        // Update Customer's Profile
         public ActionResult UpdateProfile(CustomerViewModel customerViewModel)
         {
             try

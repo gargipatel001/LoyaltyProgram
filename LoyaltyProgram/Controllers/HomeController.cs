@@ -17,6 +17,7 @@ namespace LoyaltyProgram.Controllers
         {
             try
             {
+                // Check for customer session
                 if (Session["Customer"] != null)
                 {
                     CustomerViewModel cvm = new CustomerViewModel();
@@ -25,6 +26,7 @@ namespace LoyaltyProgram.Controllers
                 }
                 else
                 {
+                    // check for User(admin) session
                     if (Session["User"] != null)
                     {
                         User user = new User();
@@ -44,6 +46,7 @@ namespace LoyaltyProgram.Controllers
         
         }
 
+        // Get customer by mail id
         public Customer GetCustomer(String email)
         {
             Customer customer = new Customer();
