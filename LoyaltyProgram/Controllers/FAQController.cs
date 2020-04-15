@@ -16,27 +16,35 @@ namespace LoyaltyProgram.Controllers
 
         public ActionResult Index()
         {
-            List<FAQ> faqs = new List<FAQ>();
-
-            List<FAQViewModel> faqsvM = new List<FAQViewModel>();
-
-            //Get all FAQs
-            faqs = db.FAQs.Where(_ => _.IsActive == true).ToList();
-            if (faqs != null && faqs.Count > 0)
+            if (Session["Customer"] != null)
             {
-                foreach (var item in faqs)
+                List<FAQ> faqs = new List<FAQ>();
+
+                List<FAQViewModel> faqsvM = new List<FAQViewModel>();
+
+                //Get all FAQs
+                faqs = db.FAQs.Where(_ => _.IsActive == true).ToList();
+                if (faqs != null && faqs.Count > 0)
                 {
-                    FAQViewModel faqvM = new FAQViewModel();
-                    faqvM.FAQId = item.FAQId;
-                    faqvM.Question = item.Question;
-                    faqvM.Answer = item.Answer;
-                    faqsvM.Add(faqvM);
+                    foreach (var item in faqs)
+                    {
+                        FAQViewModel faqvM = new FAQViewModel();
+                        faqvM.FAQId = item.FAQId;
+                        faqvM.Question = item.Question;
+                        faqvM.Answer = item.Answer;
+                        faqsvM.Add(faqvM);
+
+                    }
 
                 }
 
+                return View(faqsvM);
             }
-
-            return View(faqsvM);
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+           
         }
     }
 }

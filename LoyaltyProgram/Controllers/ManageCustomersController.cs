@@ -19,7 +19,15 @@ namespace LoyaltyProgram.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if (Session["User"] != null)
+            {
+                return View();
+            }
+            else
+            {
+               return RedirectToAction("Index", "Login");
+            }
+           
         }
 
         // Bind Customer's Grid

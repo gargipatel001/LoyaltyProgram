@@ -20,8 +20,14 @@ namespace LoyaltyProgram.Controllers
         // GET: Roles
         public ActionResult Index()
         {
-
-            return View();
+            if (Session["User"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         // Get All Roles

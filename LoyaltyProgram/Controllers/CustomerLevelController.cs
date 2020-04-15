@@ -17,7 +17,14 @@ namespace LoyaltyProgram.Controllers
         // GET: CustomerLevel
         public ActionResult Index()
         {
-            return View();
+            if (Session["User"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
         // Bind CustomerLevel Grid
         public ActionResult Select([DataSourceRequest]DataSourceRequest request)

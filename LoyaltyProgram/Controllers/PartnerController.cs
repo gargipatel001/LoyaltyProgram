@@ -19,7 +19,14 @@ namespace LoyaltyProgram.Controllers
         // GET: Partner
         public ActionResult Index()
         {
-            return View();
+            if (Session["User"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
         // Bind Partner Grid
         public ActionResult Read([DataSourceRequest]DataSourceRequest request)

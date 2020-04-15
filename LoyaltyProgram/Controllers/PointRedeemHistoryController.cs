@@ -17,7 +17,14 @@ namespace LoyaltyProgram.Controllers
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
         public ActionResult Index()
         {
-            return View();
+            if (Session["Customer"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
         // Get PointRedeemtionHistory by customer's ID
         public ActionResult bindPromotionRedeemHistory([DataSourceRequest]DataSourceRequest request)

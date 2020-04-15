@@ -20,13 +20,14 @@ namespace LoyaltyProgram.Controllers
         private LoyaltyProgramContext db = new LoyaltyProgramContext();
         public ActionResult Index()
         {
-            // Get All Promotions to redeem
-            List<Promotion> promotions = new List<Promotion>();
-            List<PromotionViewModel> promotionsViewModel = new List<PromotionViewModel>();
-            try
+            if (Session["Customer"] != null)
             {
-                if (Session["Customer"] != null)
+                // Get All Promotions to redeem
+                List<Promotion> promotions = new List<Promotion>();
+                List<PromotionViewModel> promotionsViewModel = new List<PromotionViewModel>();
+                try
                 {
+
                     CustomerViewModel cvm = new CustomerViewModel();
                     cvm = (CustomerViewModel)Session["Customer"];
                     promotions = GetAllPromotions();
@@ -57,16 +58,22 @@ namespace LoyaltyProgram.Controllers
                         }
                     }
 
+
+
                 }
+                catch (Exception ex)
+                {
+
+
+                }
+
+
+                return View(promotionsViewModel);
             }
-            catch (Exception ex)
+            else
             {
-
-
+                return RedirectToAction("Index", "Login");
             }
-
-
-            return View(promotionsViewModel);
         }
         // Get All promotions
         public List<Promotion> GetAllPromotions()

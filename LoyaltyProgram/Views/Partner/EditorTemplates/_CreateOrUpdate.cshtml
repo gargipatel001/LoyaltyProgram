@@ -4,8 +4,6 @@
     var imagePath = @Model.PartnerLogo;
 
 }
-
-
 <div class="card">
     <div class="card-body">
         @Html.HiddenFor(_=>_.PartnerLogo,new { id="partnerLogo"})
@@ -29,7 +27,7 @@
                 .Save("Save", "Partner")
                 .Remove("Remove", "Partner")
                 .AutoUpload(true)
-                 ).Validation(validation => validation.AllowedExtensions(new string[] { ".gif", ".jpg", ".png" })).HtmlAttributes(new { aria_label = "files" }))
+                 ).Validation(validation => validation.AllowedExtensions(new string[] { ".gif", ".jpg", ".png" })).HtmlAttributes(new { aria_label = "files", @required = "required" }))
 
 
                 </div>

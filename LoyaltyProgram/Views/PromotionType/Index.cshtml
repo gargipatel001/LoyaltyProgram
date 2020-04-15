@@ -20,7 +20,7 @@
               columns.Bound(c => c.PromotionTypeId).Width(100).Visible(false);
               columns.Bound(c => c.PromotionTypeName).Width(300).Title("Promotion Type");
                columns.Command(command => command.Custom("Change Status").HtmlAttributes(new { @class = "btn btn-primary", @id = "btnstyle", visible = false }).Click("UpdateStatus")).Width(30).HtmlAttributes(new { align = "center" }).HeaderHtmlAttributes(new { style = "text-align:center;" });
-              //columns.Bound(c => c.RoleDescription).Width(100).Title("Description");
+             
           })
           .Sortable()
           .Filterable()
@@ -204,7 +204,7 @@
             }
 
             else {
-                $("#txtPromotionTypeName").attr("readonly", true);
+                //$("#txtPromotionTypeName").attr("readonly", true);
                 //$("#txtProjectID").attr("readonly", true);
                 e.container.data("kendoWindow").bind("deactivate", function () {
                     $("#gvPromotionTypes").data("kendoGrid").dataSource.read();

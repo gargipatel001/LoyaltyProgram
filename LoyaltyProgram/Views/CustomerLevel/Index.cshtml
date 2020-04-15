@@ -161,8 +161,8 @@
 
         function setKendoGridButtons(gvCustomerLevel) {
             setTimeout(function () {
-                $("#" + gvCustomerLevel + " .k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
-                $("#" + gvCustomerLevel + " .k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button ");
+                $("#" + gvCustomerLevel + ".k-grid-edit").html("<span class='fa fa-pencil fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
+                $("#" + gvCustomerLevel + ".k-grid-delete").html("<span  class='fa fa-times fa-lg'></span>").css("min-width", "10px").removeClass("k-button");
 
             });
         }
@@ -170,7 +170,6 @@
             if (e.type == "create") {
                 $("#gvCustomerLevel").data("kendoGrid").dataSource.read();
                 if (e.response != null && e.response.Errors == null) {
-
                   ShowNotification("Success", "success");
                 }
 
